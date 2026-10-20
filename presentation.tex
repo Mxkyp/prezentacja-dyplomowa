@@ -497,29 +497,73 @@ if __name__ == "__main__":
 % =============================================================================
 \section{Rezultat implementacji}
 
-\begin{frame}{Rezultat pracy inżynierskiej -- zrealizowana platforma}
-    \begin{columns}[T,onlytextwidth]
-        \begin{column}{0.49\textwidth}
-            \begin{block}{Interaktywne środowisko pracy (IDE w chmurze)}
-                \begin{itemize}
-                    \item \textbf{Dwuokienkowy interfejs problemu:} opis merytoryczny zadania po lewej stronie, edytor \textbf{CodeMirror 6} z podświetlaniem składni Pythona po prawej.
-                    \item \textbf{Rozszerzalny panel wyników testów:} natychmiastowy podgląd wyjścia standardowego (\texttt{stdout}), błędów (\texttt{stderr}), czasu wykonania oraz zużycia pamięci RAM.
-                    \item \textbf{Rozdział trybów \texttt{Run} i \texttt{Submit}:} błyskawiczne sprawdzanie na jawnych przypadkach testowych vs pełna weryfikacja na ukrytym zbiorze testowym.
-                \end{itemize}
-            \end{block}
-        \end{column}
+\begin{frame}{Rezultat pracy inżynierskiej -- zrealizowana platforma AlgoBio}
+    \centering
+    \vspace{1pt}
+    \begin{tikzpicture}[
+        x=1cm, y=1cm,
+        titlebar/.style={
+            rectangle,
+            rounded corners=3pt,
+            fill=DarkRed,
+            text=white,
+            font=\scriptsize\bfseries,
+            minimum width=13.8cm,
+            minimum height=0.52cm,
+            align=center
+        },
+        imgbox/.style={
+            rectangle,
+            rounded corners=3pt,
+            draw=DarkRed!50,
+            fill=white,
+            thick,
+            inner sep=2pt
+        }
+    ]
+        % Stały obszar rysowania zapobiegający przesunięciom między krokami 1-4
+        \useasboundingbox (-7.0, -5.75) rectangle (7.0, 0.1);
 
-        \begin{column}{0.48\textwidth}
-            \begin{exampleblock}{Uwierzytelnianie i grywalizacja}
-                \begin{itemize}
-                    \item \textbf{Bezpieczne logowanie:} integracja z protokołem \textbf{Google OAuth2} oraz bezstanowa autoryzacja sesji tokenami \textbf{JWT}.
-                    \item \textbf{System dziennych serii (\textit{streaks}):} automatyczne naliczanie kolejnych dni aktywności po pierwszym zaakceptowanym rozwiązaniu w danym dniu.
-                    \item \textbf{Wizualizacja postępów:} roczna mapa aktywności (\textit{heatmap}) w profilu użytkownika oraz animacja po zaliczeniu zadania.
-                    \item \textbf{Wielojęzyczność:} wsparcie internacjonalizacji interfejsu (\texttt{svelte-i18n}).
-                \end{itemize}
-            \end{exampleblock}
-        \end{column}
-    \end{columns}
+        % --- KROK 1: Logowanie OAuth2 ---
+        \only<1>{
+            \node[titlebar] at (0, -0.25) {1/4: Bezpieczne uwierzytelnianie użytkowników (OAuth 2.0 -- Google oraz GitHub)};
+            \node[imgbox] at (0, -3.15) {
+                \includegraphics[height=4.85cm, trim=450 220 450 220, clip]{oauth.png}
+            };
+        }
+
+        % --- KROK 2: Widok rozwiązywania problemu (IDE) ---
+        \only<2>{
+            \node[titlebar] at (0, -0.25) {2/4: Dwuokienkowy interfejs problemu, edytor CodeMirror 6 oraz przypadki testowe};
+            \node[imgbox] (probimg) at (0, -3.15) {
+                \includegraphics[height=4.85cm]{problemPage.png}
+            };
+            % Zakrycie wyłącznie linijki z roboczym adresem e-mail pod imieniem i nazwiskiem
+            \begin{scope}[shift={(probimg.south west)}, x={($(probimg.south east)-(probimg.south west)$)}, y={($(probimg.north west)-(probimg.south west)$)}]
+                \fill[white] (0.875, 0.890) rectangle (0.968, 0.905);
+            \end{scope}
+        }
+
+        % --- KROK 3: Werdykt zgłoszenia i modal grywalizacji (Streak) ---
+        \only<3>{
+            \node[titlebar] at (0, -0.25) {3/4: Historia zgłoszeń, diagnostyka przypadków testowych i modal serii (\textit{Streak})};
+            \node[imgbox] at (0, -3.15) {
+                \includegraphics[height=4.85cm]{success.png}
+            };
+        }
+
+        % --- KROK 4: Profil użytkownika i roczna mapa aktywności (Heatmap) ---
+        \only<4>{
+            \node[titlebar] at (0, -0.25) {4/4: Profil użytkownika -- statystyki serii (\textit{Streaks}) oraz roczna mapa aktywności};
+            \node[imgbox] (heatimg) at (0, -3.15) {
+                \includegraphics[height=4.85cm, trim=380 0 380 0, clip]{heatmap.png}
+            };
+            % Zakrycie wyłącznie linijki z roboczym adresem e-mail pod imieniem i nazwiskiem
+            \begin{scope}[shift={(heatimg.south west)}, x={($(heatimg.south east)-(heatimg.south west)$)}, y={($(heatimg.north west)-(heatimg.south west)$)}]
+                \fill[white] (0.110, 0.600) rectangle (0.250, 0.650);
+            \end{scope}
+        }
+    \end{tikzpicture}
 \end{frame}
 
 % =============================================================================
