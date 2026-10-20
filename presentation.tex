@@ -45,7 +45,7 @@
 
 % Metadane prezentacji
 \title[AlgoBio -- praca inżynierska]{\texorpdfstring{AlgoBio -- wysoce skalowalna platforma\\do nauki algorytmów bioinformatyki}{AlgoBio -- wysoce skalowalna platforma do nauki algorytmów bioinformatyki}}
-\subtitle{Prezentacja pracy dyplomowej inżynierskiej}
+% \subtitle{Prezentacja pracy dyplomowej inżynierskiej}
 \author[Mikołaj Pawłoś]{\texorpdfstring{Autor: \textbf{Mikołaj Pawłoś}\\[4pt]{\small Promotor: \textbf{dr inż. Mateusz Smoliński}}}{Mikołaj Pawłoś}}
 \institute[FTIMS PŁ]{\texorpdfstring{Wydział Fizyki Technicznej, Informatyki i Matematyki Stosowanej\\Politechnika Łódzka}{FTIMS PŁ}}
 \date{Październik 2026}
@@ -64,45 +64,114 @@
 % =============================================================================
 \section{Motywacja}
 
-\begin{frame}{Motywacja wyboru tematu i luka rynkowa}
-    \begin{columns}[T,onlytextwidth]
-        \begin{column}{0.48\textwidth}
-            \begin{block}{Rozkwit platform w innych domenach IT}
-                Współczesna nauka programowania opiera się na interaktywnych środowiskach w przeglądarce:
-                \begin{itemize}
-                    \item \textbf{LeetCode / NeetCode} -- algorytmika ogólna i struktury danych,
-                    \item \textbf{HackerRank} -- zadania rekrutacyjne i wielodomenowe,
-                    \item \textbf{getcracked.io} -- niskopoziomowy C++ oraz inżynieria systemowa.
-                \end{itemize}
-            \end{block}
-            \begin{alertblock}{Problem w domenie bioinformatyki}
-                Najpopularniejsza platforma \textbf{Rosalind} wymusza pobieranie plików \texttt{.txt}, lokalne uruchamianie skryptu w oknie 5 minut i ręczne wklejanie wyniku.
-            \end{alertblock}
-        \end{column}
+\begin{frame}{Motywacja wyboru tematu -- wyspecjalizowane odpowiedniki LeetCode}
+    \centering
+    \vspace{2pt}
+    \begin{tikzpicture}[
+        x=1cm, y=1cm,
+        card/.style={
+            rectangle,
+            rounded corners=4pt,
+            draw=DarkRed!60,
+            fill=CodeBg,
+            thick,
+            minimum width=3.35cm,
+            minimum height=2.65cm
+        },
+        biocard/.style={
+            rectangle,
+            rounded corners=4pt,
+            draw=MainRed,
+            fill=LightRed,
+            very thick,
+            dashed,
+            minimum width=3.35cm,
+            minimum height=2.65cm
+        },
+        cardtitle/.style={
+            rectangle,
+            rounded corners=2pt,
+            fill=DarkRed,
+            text=white,
+            font=\scriptsize\bfseries,
+            minimum width=3.15cm,
+            minimum height=0.44cm,
+            align=center
+        },
+        biotitle/.style={
+            rectangle,
+            rounded corners=2pt,
+            fill=MainRed,
+            text=white,
+            font=\scriptsize\bfseries,
+            minimum width=3.15cm,
+            minimum height=0.44cm,
+            align=center
+        },
+        pill/.style={
+            rectangle,
+            rounded corners=2pt,
+            draw=MainRed!35,
+            fill=white,
+            font=\scriptsize\bfseries,
+            text=DarkRed,
+            inner xsep=4pt,
+            inner ysep=2.2pt,
+            minimum width=2.9cm,
+            align=center
+        }
+    ]
+        % --- RZĄD 1 ---
+        % 1. Quant Finance & Trading
+        \node[card] (c1) at (0, 0) {};
+        \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c1.north) {1. Quant \& Trading};
+        \node[pill] at ([yshift=0.42cm]c1.center) {QuantGuide};
+        \node[pill] at ([yshift=0.0cm]c1.center) {WhiteBox};
+        \node[pill] at ([yshift=-0.42cm]c1.center) {MyntBit};
+        \node[pill] at ([yshift=-0.84cm]c1.center) {Brainstellar};
 
-        \begin{column}{0.49\textwidth}
-            \begin{exampleblock}{Porównanie podejść edukacyjnych}
-                \centering
-                \scriptsize
-                \setlength{\tabcolsep}{4.5pt}
-                \begin{tabular}{@{}lccc@{}}
-                    \toprule
-                    \textbf{Cecha platformy} & \textbf{Rosalind} & \textbf{LeetCode} & \textbf{AlgoBio} \\
-                    \midrule
-                    Zadania bioinformatyczne & Tak & Nie & \textbf{Tak} \\
-                    Edytor w przeglądarce & Nie & Tak & \textbf{Tak} \\
-                    Weryfikacja przypadków brzeg. & Nie & Tak & \textbf{Tak} \\
-                    Izolowany sandbox kodu & Nie & Tak & \textbf{Tak} \\
-                    Grywalizacja (\textit{streaks}) & Nie & Tak & \textbf{Tak} \\
-                    \bottomrule
-                \end{tabular}
-            \end{exampleblock}
+        % 2. Machine Learning & Data Science
+        \node[card] (c2) at (3.65, 0) {};
+        \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c2.north) {2. ML \& Data Science};
+        \node[pill] at ([yshift=0.32cm]c2.center) {Deep-ML};
+        \node[pill] at ([yshift=-0.18cm]c2.center) {DataLemur};
+        \node[pill] at ([yshift=-0.68cm]c2.center) {StrataScratch};
 
-            \begin{block}{Cel pracy inżynierskiej}
-                Stworzenie skalowalnej platformy łączącej merytorykę bioinformatyczną z nowoczesnym doświadczeniem użytkownika (UX) znanym z \textbf{LeetCode} i \textbf{getcracked.io}.
-            \end{block}
-        \end{column}
-    \end{columns}
+        % 3. Frontend Engineering
+        \node[card] (c3) at (7.3, 0) {};
+        \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c3.north) {3. Frontend Engineering};
+        \node[pill] at ([yshift=0.12cm]c3.center) {GreatFrontEnd};
+        \node[pill] at ([yshift=-0.48cm]c3.center) {BFE.dev (BigFrontend)};
+
+        % 4. Linux, DevOps & SRE
+        \node[card] (c4) at (10.95, 0) {};
+        \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c4.north) {4. Linux, DevOps \& SRE};
+        \node[pill] at ([yshift=0.12cm]c4.center) {SadServers};
+        \node[pill] at ([yshift=-0.48cm]c4.center) {Killercoda};
+
+        % --- RZĄD 2 ---
+        % 5. Hardware & Digital Logic
+        \node[card] (c5) at (0, -2.95) {};
+        \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c5.north) {5. Hardware (FPGA/ASIC)};
+        \node[pill] at ([yshift=-0.18cm]c5.center) {HDLBits};
+
+        % 6. Databases & SQL
+        \node[card] (c6) at (3.65, -2.95) {};
+        \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c6.north) {6. Bazy danych i SQL};
+        \node[pill] at ([yshift=0.12cm]c6.center) {PGExercises};
+        \node[pill] at ([yshift=-0.48cm]c6.center) {SQLZoo};
+
+        % 7. Cybersecurity
+        \node[card] (c7) at (7.3, -2.95) {};
+        \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c7.north) {7. Cybersecurity};
+        \node[pill] at ([yshift=0.12cm]c7.center) {OverTheWire (Bandit)};
+        \node[pill] at ([yshift=-0.48cm]c7.center) {PortSwigger Academy};
+
+        % 8. Bioinformatyka ???
+        \node[biocard] (c8) at (10.95, -2.95) {};
+        \node[biotitle, anchor=north] at ([yshift=-0.1cm]c8.north) {8. Bioinformatyka};
+        \node[font=\Huge\bfseries, text=MainRed] at ([yshift=-0.2cm]c8.center) {???};
+    \end{tikzpicture}
 \end{frame}
 
 % =============================================================================
