@@ -31,6 +31,8 @@
 \lstset{
     language=Python,
     basicstyle=\ttfamily\scriptsize,
+    columns=fullflexible,
+    keepspaces=true,
     keywordstyle=\color{MainRed}\bfseries,
     commentstyle=\color{gray}\itshape,
     stringstyle=\color{AccentGreen},
@@ -475,87 +477,173 @@
 \end{frame}
 
 % =============================================================================
-% SLAJD 5: Strategia cz. 2 - Mechanizm wrappowania i egzekucji kodu
-% =============================================================================
-\begin{frame}[fragile]{Mechanizm opakowywania (wrappowania) i egzekucji kodu}
-    \begin{columns}[T,onlytextwidth]
-        \begin{column}{0.45\textwidth}
-            \textbf{\scriptsize 1. Kod pisany przez użytkownika:}
-            \begin{lstlisting}
-class Solution:
-    # class FastqRead: seq: str; phred: list[int]
-    def filter_bases(self, read: FastqRead, min_q: int) -> str:
-        return "".join(
-            b for b, q in zip(read.seq, read.phred) if q >= min_q
-        )
-            \end{lstlisting}
-
-            \textbf{\scriptsize 2. Paczka po opakowaniu przez backend:}
-            \begin{lstlisting}
-import sys, json
-from algobio_types import FastqRead
-
-# --- Wstrzykniety kod uzytkownika ---
-class Solution: ...
-# --- Automatyczny runner I/O ---
-if __name__ == "__main__":
-    raw = json.loads(sys.stdin.read())
-    read = FastqRead(**raw["read"])
-    res = Solution().filter_bases(read, raw["min_q"])
-    print(json.dumps(res))
-            \end{lstlisting}
-        \end{column}
-
-        \begin{column}{0.52\textwidth}
-            \begin{block}{Asynchroniczny potok ewaluacji zgłoszenia}
-                \centering
-                \begin{tikzpicture}[
-                    font=\scriptsize,
-                    stepbox/.style={rectangle, rounded corners=2pt, draw=MainRed, fill=LightRed, thick, minimum width=5.9cm, minimum height=0.44cm, align=center},
-                    arr/.style={-{Stealth[scale=0.75]}, thick, draw=MainRed}
-                ]
-                    \node[stepbox] (p1) {\textbf{1.} Przesłanie czystej funkcji z edytora (\texttt{POST /submit})};
-                    \node[stepbox, below=0.16cm of p1] (p2) {\textbf{2.} Dołączenie importów, klas domenowych i startera I/O};
-                    \node[stepbox, below=0.16cm of p2] (p3) {\textbf{3.} Zlecenie paczki testów do \textbf{Judge0} (status \texttt{PROCESSING})};
-                    \node[stepbox, below=0.16cm of p3] (p4) {\textbf{4.} Odbiór asynchronicznych callbacków (\texttt{PUT /judge0/submit/\{id\}})};
-                    \node[stepbox, below=0.16cm of p4] (p5) {\textbf{5.} Agregacja wyników testów, zapis werdyktu i serii};
-
-                    \draw[arr] (p1) -- (p2);
-                    \draw[arr] (p2) -- (p3);
-                    \draw[arr] (p3) -- (p4);
-                    \draw[arr] (p4) -- (p5);
-                \end{tikzpicture}
-            \end{block}
-            \begin{exampleblock}{Kluczowa korzyść architektoniczna}
-                Użytkownik skupia się wyłącznie na algorytmie bioinformatycznym, a serwer API nie jest blokowany wykonaniem w sandboxie.
-            \end{exampleblock}
-        \end{column}
-    \end{columns}
-\end{frame}
-
-% =============================================================================
 % SEKCJA 4: Wnioski i wyzwania
 % =============================================================================
 \section{Wnioski i wyzwania}
 
-\begin{frame}{Wnioski i spostrzeżenia -- trudności oraz ich rozwiązanie}
-    \begin{alertblock}{Główne wyzwanie: automatyczne wrappowanie kodu użytkownika w klasy i importy}
-        \begin{itemize}
-            \item \textbf{Problem:} Surowy silnik \textbf{Judge0} operuje na strumieniach \texttt{stdin}/\texttt{stdout} i pojedynczym pliku wykonywalnym. Wymaganie od studenta ręcznego parsowania wejścia i importowania struktur bioinformatycznych obniżało ergonomię nauki.
-            \item \textbf{Rozwiązanie:} Zaprojektowano warstwę transformacji w backendzie, która przed wysyłką do Judge0 dynamicznie opakowuje kod użytkownika w predefiniowane importy, klasy pomocnicze oraz kod uruchomieniowy (\textit{runner}) deserializujący przypadki testowe i walidujący zwracany typ.
-        \end{itemize}
-    \end{alertblock}
+\begin{frame}{Wnioski i wyzwania -- obiektowe IDE a surowy model I/O silnika Judge0}
+    \centering
+    \vspace{1pt}
+    \begin{tikzpicture}[
+        x=1cm, y=1cm,
+        world/.style={
+            rectangle,
+            rounded corners=4pt,
+            draw=DarkRed!70,
+            fill=CodeBg,
+            thick
+        },
+        wtitle/.style={
+            rectangle,
+            rounded corners=2pt,
+            fill=DarkRed,
+            text=white,
+            font=\scriptsize\bfseries,
+            minimum width=5.6cm,
+            minimum height=0.44cm,
+            align=center
+        },
+        nodebox/.style={
+            rectangle,
+            rounded corners=2pt,
+            draw=DarkRed!50,
+            fill=white,
+            thick,
+            font=\scriptsize,
+            minimum width=5.2cm,
+            minimum height=0.56cm,
+            align=center
+        },
+        errbox/.style={
+            rectangle,
+            rounded corners=2pt,
+            draw=MainRed,
+            fill=LightRed,
+            very thick,
+            font=\scriptsize\bfseries,
+            text=MainRed,
+            minimum width=5.2cm,
+            minimum height=0.62cm,
+            align=center
+        },
+        reqbox/.style={
+            rectangle,
+            rounded corners=3pt,
+            draw=MainRed,
+            fill=LightRed,
+            thick,
+            minimum width=4.35cm,
+            minimum height=1.22cm,
+            align=center,
+            font=\scriptsize
+        },
+        arr/.style={-{Stealth[scale=0.8]}, thick, draw=DarkRed}
+    ]
+        \useasboundingbox (0, -5.55) rectangle (13.80, 0.05);
 
+        % --- LEWY ŚWIAT: OCZEKIWANIE UŻYTKOWNIKA (ALGOBIO IDE) ---
+        \draw[world] (0.05, -3.72) rectangle (6.05, 0);
+        \node[wtitle] at (3.05, -0.32) {Perspektywa użytkownika (AlgoBio IDE)};
+
+        \node[nodebox] (u1) at (3.05, -1.02) {\textbf{1. Starter Code:} \texttt{class Solution} + \texttt{FastqRead}};
+        \node[nodebox] (u2) at (3.05, -1.92) {\textbf{2. Wywołanie:} \texttt{filter\_bases(read, 30)}};
+
+        \node[nodebox, minimum width=2.45cm, draw=DarkRed!50] (udbg) at (1.70, -3.05) {\texttt{print(\textquotedbl dbg\textquotedbl)}\\\tiny Osobny panel logów};
+        \node[nodebox, minimum width=2.45cm, draw=AccentGreen, fill=AccentGreen!8, text=AccentGreen] (uret) at (4.40, -3.05) {\texttt{return \textquotedbl ACT\textquotedbl}\\\tiny Werdykt zadania};
+
+        \draw[arr] (u1) -- (u2);
+        \draw[arr] (u2.south) -- ++(0,-0.14) -| (udbg.north);
+        \draw[arr] (u2.south) -- ++(0,-0.14) -| (uret.north);
+
+        % --- ŚRODEK: ZDERZENIE PARADYGMATÓW ---
+        \node[circle, draw=MainRed, fill=LightRed, very thick, font=\normalsize\bfseries, text=MainRed, inner sep=3pt] (clash) at (6.90, -1.86) {?!};
+        \draw[arr, <->, MainRed, very thick] (6.12, -1.86) -- (clash.west);
+        \draw[arr, <->, MainRed, very thick] (clash.east) -- (7.68, -1.86);
+
+        % --- PRAWY ŚWIAT: GENERYCZNY SILNIK JUDGE0 ---
+        \draw[world] (7.75, -3.72) rectangle (13.75, 0);
+        \node[wtitle, fill=MainRed] at (10.75, -0.32) {Generyczny silnik wykonawczy (Judge0)};
+
+        \node[nodebox] (j1) at (10.75, -1.02) {\textbf{Wejście (\texttt{stdin}):} surowy ciąg znaków (\texttt{str})};
+        \node[nodebox, fill=CodeBg] (j2) at (10.75, -1.92) {\textbf{Izolowany kontener:} uruchomienie pojedynczego pliku};
+        \node[errbox] (j3) at (10.75, -3.02) {\textbf{Wyjście (\texttt{stdout}):} \texttt{\textquotedbl dbg\textbackslash nACT\textquotedbl}\\\tiny Kolizja \texttt{print()} z wynikiem $\rightarrow$ fałszywy \texttt{Wrong Answer}!};
+
+        \draw[arr] (j1) -- (j2);
+        \draw[arr, MainRed] (j2) -- (j3);
+
+        % --- DOLNY RZĄD: 3 WYMAGANE ELEMENTY ARCHITEKTONICZNE ---
+        \node[reqbox] at (2.25, -4.78) {
+            \textcolor{MainRed}{\textbf{1. Endpoint Starter Code}}\\[2pt]
+            Dynamiczne generowanie sygnatury\\oraz opisu typu (\texttt{FastqRead})
+        };
+        \node[reqbox] at (6.90, -4.78) {
+            \textcolor{MainRed}{\textbf{2. Wrapper i serializacja}}\\[2pt]
+            Mapowanie \texttt{stdin (str)} $\rightarrow$ obiekty\\domenowe $\rightarrow$ \texttt{stdout (str)}
+        };
+        \node[reqbox] at (11.55, -4.78) {
+            \textcolor{MainRed}{\textbf{3. Przekierowanie \texttt{print()}}}\\[2pt]
+            Izolacja logów debugowania\\od strumienia oceny wyniku
+        };
+    \end{tikzpicture}
+\end{frame}
+
+% =============================================================================
+% SLAJD: Rozwiązanie - Mechanizm wrappowania i egzekucji kodu
+% =============================================================================
+\begin{frame}[fragile]{Rozwiązanie -- mechanizm opakowywania (wrappowania) i egzekucji kodu}
+    \vspace{-3pt}
     \begin{columns}[T,onlytextwidth]
-        \begin{column}{0.485\textwidth}
-            \begin{block}{Wyzwanie 2: Blokujące odpytywanie Judge0}
-                \textbf{Rozwiązanie:} Zastąpienie synchronicznego odpytywania (\textit{polling}) asynchroniczną architekturą opartą na \textbf{webhookach} (\texttt{callback\_url}), co wyeliminowało wąskie gardło wątków API.
-            \end{block}
+        \begin{column}{0.41\textwidth}
+            \textbf{\scriptsize 1. Kod z edytora użytkownika:}
+            \begin{lstlisting}[basicstyle=\ttfamily\fontsize{6.0}{7.4}\selectfont]
+class Solution:
+    # class FastqRead:
+    #     seq: str; phred: list[int]
+    def filter_bases(
+        self, read: FastqRead, min_q: int
+    ) -> str:
+        print("Debug:", read.seq)
+        return "".join(
+            b for b, q in zip(
+                read.seq, read.phred
+            ) if q >= min_q
+        )
+            \end{lstlisting}
+
+            \vspace{-2pt}
+            \begin{exampleblock}{Asynchroniczny odbiór z Judge0}
+                \scriptsize
+                \begin{itemize}\setlength{\itemsep}{1pt}
+                    \item Zamiast blokującego \textit{pollingu} zastosowano \textbf{webhooki} (\texttt{PUT /judge0/submit/\{id\}}).
+                    \item Wbudowany komparator Judge0 weryfikuje czysty \texttt{stdout}, a logi z \texttt{print()} wracają w osobnym strumieniu.
+                \end{itemize}
+            \end{exampleblock}
         \end{column}
-        \begin{column}{0.485\textwidth}
-            \begin{block}{Wyzwanie 3: Wiarygodność testów z bazą}
-                \textbf{Rozwiązanie:} Zamiast nadmiernego mockowania warstwy ORM w testach callbacków zastosowano \textbf{Testcontainers} z rzeczywistą instancją PostgreSQL.
-            \end{block}
+
+        \begin{column}{0.56\textwidth}
+            \textbf{\scriptsize 2. Kompletny skrypt po opakowaniu przez backend:}
+            \begin{lstlisting}[basicstyle=\ttfamily\fontsize{6.0}{7.4}\selectfont]
+import sys, json
+from contextlib import redirect_stdout
+from algobio_types import FastqRead
+
+# --- Wstrzykniety kod uzytkownika ---
+class Solution:
+    # class FastqRead: seq: str; phred: list[int]
+    def filter_bases(self, read: FastqRead, min_q: int) -> str:
+        print("Debug:", read.seq)
+        return "".join(
+            b for b, q in zip(read.seq, read.phred) if q >= min_q
+        )
+
+# --- Automatyczny runner I/O z izolacja print() ---
+if __name__ == "__main__":
+    raw = json.loads(sys.stdin.read())
+    read = FastqRead(**raw["read"])
+    with redirect_stdout(sys.stderr):
+        res = Solution().filter_bases(read, raw["min_q"])
+    print(json.dumps(res))
+            \end{lstlisting}
         \end{column}
     \end{columns}
 \end{frame}
