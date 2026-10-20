@@ -1,0 +1,363 @@
+\documentclass[10pt,aspectratio=169]{beamer}
+
+% Kodowanie i obsługa języka polskiego
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% Pakiety pomocnicze i graficzne
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc, fit, backgrounds}
+\usepackage{booktabs}
+\usepackage{listings}
+
+% Zachowanie klasycznego stylu Warsaw ze zmianą koloru głównego na #8B0002
+\usetheme{Warsaw}
+\definecolor{MainRed}{HTML}{8B0002}
+\definecolor{DarkRed}{HTML}{5A0001}
+\definecolor{LightRed}{HTML}{FDF2F2}
+\definecolor{AccentGreen}{HTML}{1B5E20}
+\definecolor{CodeBg}{HTML}{F7F7F9}
+
+\usecolortheme[named=MainRed]{structure}
+\setbeamercolor{alerted text}{fg=MainRed}
+\setbeamercolor{example text}{fg=AccentGreen}
+
+% Konfiguracja listingów kodu
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{MainRed}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    stringstyle=\color{AccentGreen},
+    backgroundcolor=\color{CodeBg},
+    frame=single,
+    rulecolor=\color{MainRed!30},
+    showstringspaces=false,
+    breaklines=true,
+    aboveskip=3pt,
+    belowskip=3pt,
+    xleftmargin=4pt,
+    xrightmargin=4pt
+}
+
+% Metadane prezentacji
+\title[AlgoBio -- praca inżynierska]{AlgoBio -- wysoce skalowalna platforma\\do nauki algorytmów bioinformatyki}
+\subtitle{Prezentacja pracy dyplomowej inżynierskiej}
+\author[Mikołaj Pawłoś]{Autor: \textbf{Mikołaj Pawłoś}\\[4pt]{\small Promotor: \textbf{dr inż. Mateusz Smoliński}}}
+\institute[FTIMS PŁ]{Wydział Fizyki Technicznej, Informatyki i Matematyki Stosowanej\\Politechnika Łódzka}
+\date{Październik 2026}
+
+\begin{document}
+
+% =============================================================================
+% SLAJD 1: Strona tytułowa
+% =============================================================================
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% =============================================================================
+% SEKCJA 1: Motywacja
+% =============================================================================
+\section{Motywacja}
+
+\begin{frame}{Motywacja wyboru tematu i luka rynkowa}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Rozkwit platform w innych domenach IT}
+                Współczesna nauka programowania opiera się na interaktywnych środowiskach w przeglądarce:
+                \begin{itemize}
+                    \item \textbf{LeetCode / NeetCode} -- algorytmika ogólna i struktury danych,
+                    \item \textbf{HackerRank} -- zadania rekrutacyjne i wielodomenowe,
+                    \item \textbf{getcracked.io} -- niskopoziomowy C++ oraz inżynieria systemowa.
+                \end{itemize}
+            \end{block}
+            \vspace{2pt}
+            \begin{alertblock}{Problem w domenie bioinformatyki}
+                Najpopularniejsza platforma \textbf{Rosalind} wymusza pobieranie plików \texttt{.txt}, lokalne uruchamianie skryptu w oknie 5 minut i ręczne wklejanie wyniku.
+            \end{alertblock}
+        \end{column}
+
+        \begin{column}{0.49\textwidth}
+            \begin{exampleblock}{Porównanie podejść edukacyjnych}
+                \vspace{2pt}
+                \centering
+                \footnotesize
+                \begin{tabular}{@{}lccc@{}}
+                    \toprule
+                    \textbf{Cecha platformy} & \textbf{Rosalind} & \textbf{LeetCode} & \textbf{AlgoBio} \\
+                    \midrule
+                    Zadania bioinformatyczne & Tak & Nie & \textbf{Tak} \\
+                    Edytor w przeglądarce & Nie & Tak & \textbf{Tak} \\
+                    Weryfikacja przypadków brzeg. & Nie & Tak & \textbf{Tak} \\
+                    Izolowany sandbox kodu & Nie & Tak & \textbf{Tak} \\
+                    Grywalizacja (\textit{streaks}) & Nie & Tak & \textbf{Tak} \\
+                    \bottomrule
+                \end{tabular}
+                \vspace{2pt}
+            \end{exampleblock}
+
+            \begin{block}{Cel pracy inżynierskiej}
+                Stworzenie skalowalnej platformy łączącej merytorykę bioinformatyczną z nowoczesnym doświadczeniem użytkownika (UX) znanym z \textbf{LeetCode} i \textbf{getcracked.io}.
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =============================================================================
+% SEKCJA 2: Projekt AlgoBio
+% =============================================================================
+\section{Projekt AlgoBio}
+
+\begin{frame}{Koncepcja systemu AlgoBio -- perspektywa funkcjonalna}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.47\textwidth}
+            \begin{block}{Główne założenia projektu}
+                \textbf{AlgoBio} to interaktywna aplikacja webowa pozwalająca na rozwiązywanie problemów bioinformatycznych bezpośrednio w przeglądarce:
+                \begin{itemize}
+                    \item \textbf{Gość:} przeglądanie katalogu zadań oraz rejestracja przez OAuth2.
+                    \item \textbf{Użytkownik:} pisanie kodu w Pythonie, szybkie testowanie (\texttt{Run}), pełna ewaluacja (\texttt{Submit}) oraz śledzenie statystyk.
+                    \item \textbf{Administrator:} wgląd w globalne statystyki platformy i zarządzanie bazą problemów.
+                \end{itemize}
+            \end{block}
+        \end{column}
+
+        \begin{column}{0.50\textwidth}
+            \begin{block}{Model działania z punktu widzenia użytkownika}
+                \centering
+                \vspace{3pt}
+                \begin{tikzpicture}[
+                    node distance=0.45cm and 0.6cm,
+                    box/.style={rectangle, rounded corners=3pt, draw=MainRed, fill=LightRed, very thick, minimum width=2.9cm, minimum height=0.65cm, align=center, font=\scriptsize\bfseries},
+                    mode/.style={rectangle, rounded corners=3pt, draw=DarkRed, fill=white, thick, minimum width=2.6cm, minimum height=0.65cm, align=center, font=\scriptsize},
+                    arr/.style={-{Stealth[scale=0.9]}, thick, draw=MainRed}
+                ]
+                    \node[box] (select) {1. Wybór problemu bioinformatycznego};
+                    \node[box, below=of select] (editor) {2. Implementacja funkcji w edytorze};
+                    \node[mode, below left=0.5cm and -0.8cm of editor] (run) {\textbf{Tryb Run}\\Szybki test przykładowy};
+                    \node[mode, below right=0.5cm and -0.8cm of editor] (submit) {\textbf{Tryb Submit}\\Pełny zestaw testów};
+                    \node[box, below=1.4cm of editor, minimum width=5.6cm] (stats) {3. Werdykt, metryki czasu/pamięci i aktualizacja serii (\textit{streak})};
+
+                    \draw[arr] (select) -- (editor);
+                    \draw[arr] (editor.south) -- ++(0,-0.2) -| (run.north);
+                    \draw[arr] (editor.south) -- ++(0,-0.2) -| (submit.north);
+                    \draw[arr] (run.south) |- ([yshift=0.2cm]stats.north) -- (stats.north);
+                    \draw[arr] (submit.south) |- ([yshift=0.2cm]stats.north) -- (stats.north);
+                \end{tikzpicture}
+                \vspace{2pt}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =============================================================================
+% SEKCJA 3: Strategia i architektura
+% =============================================================================
+\section{Strategia i architektura}
+
+\begin{frame}{Strategia rozwiązania i architektura systemu}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.46\textwidth}
+            \begin{block}{Stos technologiczny}
+                \begin{itemize}
+                    \item \textbf{Frontend (SPA):} Svelte 5, TypeScript, TailwindCSS v4, edytor \textbf{CodeMirror 6}.
+                    \item \textbf{Backend (REST API):} Python 3.14, \textbf{FastAPI}, SQLAlchemy 2.0, migracje Alembic, \textbf{PostgreSQL}.
+                    \item \textbf{Silnik wykonawczy:} skonteneryzowany klaster \textbf{Judge0} (bezpieczny sandbox).
+                \end{itemize}
+            \end{block}
+            \vspace{2pt}
+            \begin{exampleblock}{Podejście inżynierskie}
+                \begin{itemize}
+                    \item \textbf{Vertical Slice Architecture (VSA):} podział na niezależne wycinki domenowe zamiast warstw technicznych.
+                    \item \textbf{Testcontainers:} automatyczne testy integracyjne na rzeczywistej bazie PostgreSQL.
+                \end{itemize}
+            \end{exampleblock}
+        \end{column}
+
+        \begin{column}{0.51\textwidth}
+            \begin{block}{Architektura Vertical Slice i komponenty}
+                \centering
+                \vspace{2pt}
+                \begin{tikzpicture}[
+                    font=\scriptsize,
+                    slice/.style={rectangle, rounded corners=2pt, draw=MainRed, fill=LightRed, thick, minimum width=1.18cm, minimum height=1.35cm, align=center},
+                    layer/.style={rectangle, rounded corners=3pt, draw=DarkRed, fill=white, very thick, minimum width=6.4cm, minimum height=0.65cm, align=center, font=\scriptsize\bfseries},
+                    infra/.style={rectangle, rounded corners=3pt, draw=MainRed!80!black, fill=MainRed!10, thick, minimum width=3.0cm, minimum height=0.65cm, align=center, font=\scriptsize\bfseries},
+                    arr/.style={-{Stealth[scale=0.85]}, thick, draw=DarkRed}
+                ]
+                    \node[layer] (fe) {Klient Webowy (Svelte 5 + CodeMirror 6)};
+
+                    \node[slice, below=0.45cm of fe, xshift=-2.6cm] (s1) {\textbf{auth}\\\tiny OAuth2\\\tiny JWT};
+                    \node[slice, right=0.12cm of s1] (s2) {\textbf{problem}\\\tiny Zadania\\\tiny Testy};
+                    \node[slice, right=0.12cm of s2] (s3) {\textbf{submission}\\\tiny Wrapper\\\tiny Ewaluacja};
+                    \node[slice, right=0.12cm of s3] (s4) {\textbf{judge0}\\\tiny Klient\\\tiny Webhook};
+                    \node[slice, right=0.12cm of s4] (s5) {\textbf{user}\\\tiny Profil\\\tiny Streaki};
+
+                    \node[infra, below=0.45cm of s2, xshift=-0.3cm] (db) {PostgreSQL 16};
+                    \node[infra, below=0.45cm of s4, xshift=0.1cm] (j0) {Sandbox Judge0};
+
+                    \draw[arr, <->] (fe.south) -- (s3.north);
+                    \draw[arr, <->] (s2.south) -- (db.north);
+                    \draw[arr, <->] (s3.south) -- (db.north east);
+                    \draw[arr, <->] (s4.south) -- (j0.north);
+                \end{tikzpicture}
+                \vspace{2pt}
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =============================================================================
+% SLAJD 5: Strategia cz. 2 - Mechanizm wrappowania i egzekucji kodu
+% =============================================================================
+\begin{frame}[fragile]{Mechanizm opakowywania (wrappowania) i egzekucji kodu}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.44\textwidth}
+            \textbf{\footnotesize 1. Kod pisany przez użytkownika:}
+            \begin{lstlisting}
+class Solution:
+    def gc_content(self, dna: str) -> float:
+        gc = dna.count('G') + dna.count('C')
+        return round(gc / len(dna) * 100, 2)
+            \end{lstlisting}
+
+            \textbf{\footnotesize 2. Paczka po opakowaniu przez backend:}
+            \begin{lstlisting}
+import sys, json
+from typing import List, Dict, Optional
+from algobio_types import DNASequence
+
+# --- Wstrzykniety kod uzytkownika ---
+class Solution:
+    def gc_content(self, dna: str) -> float:
+        ...
+# --- Automatyczny harness uruchomieniowy ---
+if __name__ == "__main__":
+    args = json.loads(sys.stdin.read())
+    res = Solution().gc_content(*args)
+    print(json.dumps(res))
+            \end{lstlisting}
+        \end{column}
+
+        \begin{column}{0.53\textwidth}
+            \begin{block}{Asynchroniczny potok ewaluacji zgłoszenia}
+                \centering
+                \vspace{2pt}
+                \begin{tikzpicture}[
+                    font=\scriptsize,
+                    stepbox/.style={rectangle, rounded corners=2pt, draw=MainRed, fill=LightRed, thick, minimum width=6.3cm, minimum height=0.52cm, align=center},
+                    arr/.style={-{Stealth[scale=0.8]}, thick, draw=MainRed}
+                ]
+                    \node[stepbox] (p1) {\textbf{1.} Przesłanie czystej funkcji z edytora (\texttt{POST /submit})};
+                    \node[stepbox, below=0.22cm of p1] (p2) {\textbf{2.} Dołączenie importów, klas domenowych i startera I/O};
+                    \node[stepbox, below=0.22cm of p2] (p3) {\textbf{3.} Zlecenie paczki testów do kontenera \textbf{Judge0} (zapis \texttt{PROCESSING})};
+                    \node[stepbox, below=0.22cm of p3] (p4) {\textbf{4.} Odbiór asynchronicznych callbacków (\texttt{PUT /judge0/submit/\{id\}})};
+                    \node[stepbox, below=0.22cm of p4] (p5) {\textbf{5.} Agregacja wyników testów, zapis werdyktu i naliczenie serii};
+
+                    \draw[arr] (p1) -- (p2);
+                    \draw[arr] (p2) -- (p3);
+                    \draw[arr] (p3) -- (p4);
+                    \draw[arr] (p4) -- (p5);
+                \end{tikzpicture}
+            \end{block}
+            \begin{exampleblock}{Kluczowa korzyść architektoniczna}
+                Użytkownik skupia się wyłącznie na algorytmie bioinformatycznym, a serwer API nie jest blokowany oczekiwaniem na wykonanie kodu w sandboxie.
+            \end{exampleblock}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =============================================================================
+% SEKCJA 4: Rezultat implementacji
+% =============================================================================
+\section{Rezultat implementacji}
+
+\begin{frame}{Rezultat pracy inżynierskiej -- zrealizowana platforma}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.49\textwidth}
+            \begin{block}{Interaktywne środowisko pracy (IDE w chmurze)}
+                \begin{itemize}
+                    \item \textbf{Dwuokienkowy interfejs problemu:} opis merytoryczny zadania po lewej stronie, edytor \textbf{CodeMirror 6} z podświetlaniem składni Pythona po prawej.
+                    \item \textbf{Rozszerzalny panel wyników testów:} natychmiastowy podgląd wyjścia standardowego (\texttt{stdout}), błędów (\texttt{stderr}), czasu wykonania oraz zużycia pamięci RAM.
+                    \item \textbf{Rozdział trybów \texttt{Run} i \texttt{Submit}:} błyskawiczne sprawdzanie na jawnych przypadkach testowych vs pełna weryfikacja na ukrytym zbiorze testowym.
+                \end{itemize}
+            \end{block}
+        \end{column}
+
+        \begin{column}{0.48\textwidth}
+            \begin{exampleblock}{Uwierzytelnianie i grywalizacja}
+                \begin{itemize}
+                    \item \textbf{Bezpieczne logowanie:} integracja z protokołem \textbf{Google OAuth2} oraz bezstanowa autoryzacja sesji tokenami \textbf{JWT}.
+                    \item \textbf{System dziennych serii (\textit{streaks}):} automatyczne naliczanie kolejnych dni aktywności po pierwszym zaakceptowanym rozwiązaniu w danym dniu.
+                    \item \textbf{Wizualizacja postępów:} roczna mapa aktywności (\textit{heatmap}) w profilu użytkownika oraz animacja po zaliczeniu zadania.
+                    \item \textbf{Wielojęzyczność:} pełne wsparcie internacjonalizacji interfejsu (\texttt{svelte-i18n}).
+                \end{itemize}
+            \end{exampleblock}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =============================================================================
+% SEKCJA 5: Wnioski i wyzwania
+% =============================================================================
+\section{Wnioski i wyzwania}
+
+\begin{frame}{Wnioski i spostrzeżenia -- trudności oraz ich rozwiązanie}
+    \begin{alertblock}{Główne wyzwanie: automatyczne wrappowanie kodu użytkownika w klasy i importy}
+        \begin{itemize}
+            \item \textbf{Problem:} Surowy silnik \textbf{Judge0} operuje na strumieniach \texttt{stdin}/\texttt{stdout} i pojedynczym pliku wykonywalnym. Wymaganie od studenta ręcznego parsowania wejścia i importowania struktur bioinformatycznych obniżało ergonomię nauki.
+            \item \textbf{Rozwiązanie:} Zaprojektowano warstwę transformacji w backendzie, która przed wysyłką do Judge0 dynamicznie opakowuje kod użytkownika w predefiniowane importy, klasy pomocnicze oraz kod uruchomieniowy (\textit{runner}) deserializujący przypadki testowe i walidujący zwracany typ.
+        \end{itemize}
+    \end{alertblock}
+
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.485\textwidth}
+            \begin{block}{Wyzwanie 2: Blokujące odpytywanie Judge0}
+                \textbf{Rozwiązanie:} Zastąpienie synchronicznego odpytywania (\textit{polling}) asynchroniczną architekturą opartą na \textbf{webhookach} (\texttt{callback\_url}), co wyeliminowało wąskie gardło wątków API.
+            \end{block}
+        \end{column}
+        \begin{column}{0.485\textwidth}
+            \begin{block}{Wyzwanie 3: Wiarygodność testów z bazą}
+                \textbf{Rozwiązanie:} Zamiast nadmiernego mockowania warstwy ORM w testach callbacków zastosowano \textbf{Testcontainers} z rzeczywistą instancją PostgreSQL.
+            \end{block}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% =============================================================================
+% SLAJD 8: Podsumowanie i kierunki rozwoju
+% =============================================================================
+\begin{frame}{Podsumowanie i kierunki dalszego rozwoju}
+    \begin{columns}[T,onlytextwidth]
+        \begin{column}{0.52\textwidth}
+            \begin{exampleblock}{Realizacja celu pracy inżynierskiej}
+                Cel pracy został \textbf{w pełni osiągnięty}:
+                \begin{itemize}
+                    \item Zbudowano działającą, skalowalną platformę \textbf{AlgoBio} łączącą bioinformatykę z nowoczesnym UX.
+                    \item Wdrożono bezpieczną, asynchroniczną ewaluację kodu z automatycznym wrappowaniem w klasy i importy.
+                    \item Zapewniono wysoką modularność dzięki \textbf{Vertical Slice Architecture}.
+                \end{itemize}
+            \end{exampleblock}
+        \end{column}
+
+        \begin{column}{0.45\textwidth}
+            \begin{block}{Kierunki dalszego rozwoju}
+                \begin{itemize}
+                    \item Integracja z naukowym systemem tożsamości \textbf{ORCID} oraz \textbf{GitHub OAuth2}.
+                    \item Rozszerzenie wrappera o kolejne języki używane w bioinformatyce (\textbf{R}, \textbf{Julia}, \textbf{C++}).
+                    \item Rozbudowa panelu administracyjnego o kreator zadań i generator testów.
+                \end{itemize}
+            \end{block}
+        \end{column}
+    \end{columns}
+
+    \vspace{8pt}
+    \centering
+    {\Large \textcolor{MainRed}{\textbf{Dziękuję za uwagę!}}}\\[2pt]
+    {\small Zapraszam do zadawania pytań.}
+\end{frame}
+
+\end{document}
