@@ -64,6 +64,154 @@
 % =============================================================================
 \section{Motywacja}
 
+\begin{frame}{Paradygmat „LeetCode” -- nowoczesna nauka algorytmiki w przeglądarce}
+    \centering
+    \vspace{1pt}
+    \begin{tikzpicture}[
+        x=1cm, y=1cm,
+        browser/.style={
+            rectangle,
+            rounded corners=4pt,
+            draw=DarkRed!80,
+            fill=white,
+            very thick
+        },
+        topbar/.style={
+            rectangle,
+            rounded corners=2pt,
+            fill=DarkRed,
+            text=white,
+            font=\scriptsize\ttfamily
+        },
+        panel/.style={
+            rectangle,
+            rounded corners=3pt,
+            draw=DarkRed!35,
+            fill=CodeBg,
+            thick
+        },
+        badge/.style={
+            circle,
+            fill=MainRed,
+            text=white,
+            font=\scriptsize\bfseries,
+            inner sep=1.5pt
+        },
+        btn/.style={
+            rectangle,
+            rounded corners=2pt,
+            draw=DarkRed,
+            fill=white,
+            font=\scriptsize\bfseries,
+            text=DarkRed,
+            minimum width=1.45cm,
+            minimum height=0.42cm
+        },
+        btnsubmit/.style={
+            rectangle,
+            rounded corners=2pt,
+            draw=MainRed,
+            fill=MainRed,
+            font=\scriptsize\bfseries,
+            text=white,
+            minimum width=1.65cm,
+            minimum height=0.42cm
+        },
+        btnsubmitactive/.style={
+            rectangle,
+            rounded corners=2pt,
+            draw=AccentGreen,
+            fill=AccentGreen,
+            font=\scriptsize\bfseries,
+            text=white,
+            minimum width=1.65cm,
+            minimum height=0.42cm
+        }
+    ]
+        % Stały bounding box zapobiegający skakaniu slajdu między krokami 1-3
+        \useasboundingbox (-0.1, -5.85) rectangle (14.1, 0.1);
+
+        % Ramka przeglądarki
+        \draw[browser] (0, -4.65) rectangle (14.0, 0);
+
+        % Pasek adresu przeglądarki
+        \fill[DarkRed, rounded corners=2pt] (0.08, -0.52) rectangle (13.92, -0.08);
+        \fill[MainRed!70] (0.35, -0.30) circle (0.09cm);
+        \fill[yellow!80!orange] (0.62, -0.30) circle (0.09cm);
+        \fill[AccentGreen!80!white] (0.89, -0.30) circle (0.09cm);
+        \node[anchor=west, text=white, font=\scriptsize\ttfamily] at (1.25, -0.30) {https://leetcode.com / getcracked.io -- Interaktywne IDE w chmurze};
+
+        % --- LEWY PANEL: OPIS PROBLEMU ---
+        \draw[panel] (0.18, -3.25) rectangle (5.75, -0.65);
+        \node[badge] at (0.48, -0.92) {1};
+        \node[anchor=west, font=\scriptsize\bfseries, text=DarkRed] at (0.72, -0.92) {Opis problemu i ograniczenia};
+
+        \node[anchor=north west, align=left, font=\scriptsize, text width=5.15cm] at (0.32, -1.18) {
+            \textbf{Zadanie:} Oblicz zawartość par \texttt{G-C} w sekwencji.\\[3pt]
+            \textbf{Przykład 1:}\\
+            \texttt{Wejście: s = "AGCTATAG"}\\
+            \texttt{Wyjście: 37.5}\\[4pt]
+            \textcolor{MainRed}{\textbf{Zaleta:}} Brak ręcznego pobierania plików \texttt{.txt} i czytania ze strumienia \texttt{stdin}.
+        };
+
+        % --- PRAWY PANEL: EDYTOR KODU ---
+        \draw[panel, fill=white] (5.92, -3.25) rectangle (13.82, -0.65);
+        \node[badge] at (6.22, -0.92) {2};
+        \node[anchor=west, font=\scriptsize\bfseries, text=DarkRed] at (6.46, -0.92) {Edytor w przeglądarce (tylko logika algorytmu)};
+
+        % Kod w edytorze
+        \node[anchor=north west, align=left, font=\scriptsize\ttfamily, text width=7.4cm] at (6.12, -1.22) {
+            \textcolor{MainRed}{\textbf{class}} \textbf{Solution}:\\
+            \hspace*{1.2em}\textcolor{MainRed}{\textbf{def}} \textbf{solve}(self, s: \textbf{str}) -> \textbf{float}:\\
+            \hspace*{2.4em}\textcolor{gray}{\# Student implementuje wyłącznie funkcję}\\
+            \hspace*{2.4em}gc = s.count(\textcolor{AccentGreen}{'G'}) + s.count(\textcolor{AccentGreen}{'C'})\\
+            \hspace*{2.4em}\textcolor{MainRed}{\textbf{return}} \textbf{round}(gc / \textbf{len}(s) * 100, 2)
+        };
+
+        % Przyciski Run / Submit (zmieniają stan w krokach)
+        \node[btn] at (10.35, -2.92) {Run};
+        \only<1,3>{
+            \node[btnsubmit] (subbtn) at (12.15, -2.92) {Submit};
+        }
+        \only<2>{
+            \node[btnsubmitactive] (subbtn) at (12.15, -2.92) {Submit...};
+        }
+
+        % --- DOLNY PANEL: SANDBOX I WERYFIKACJA (ANIMACJA 3-KROKOWA) ---
+        % KROK 1: Oczekiwanie na uruchomienie
+        \only<1>{
+            \draw[panel, fill=CodeBg] (0.18, -4.50) rectangle (13.82, -3.38);
+            \node[badge] at (0.48, -3.65) {3};
+            \node[anchor=west, font=\scriptsize\bfseries, text=DarkRed] at (0.72, -3.65) {Konsola testowa i chmurowy Sandbox (krok 1/3 -- pisanie kodu)};
+            \node[anchor=west, font=\scriptsize, text=gray!80!black] at (0.48, -4.12) {Gotowy do uruchomienia. Kliknięcie \textbf{Run} sprawdzi testy przykładowe, a \textbf{Submit} uruchomi pełną baterię ukrytych testów.};
+        }
+
+        % KROK 2: Ewaluacja w chmurze
+        \only<2>{
+            \draw[panel, draw=MainRed, fill=LightRed] (0.18, -4.50) rectangle (13.82, -3.38);
+            \node[badge] at (0.48, -3.65) {3};
+            \node[anchor=west, font=\scriptsize\bfseries, text=MainRed] at (0.72, -3.65) {Weryfikacja w izolowanym kontenerze chmurowym (krok 2/3 -- wykonywanie)};
+            \node[anchor=west, font=\scriptsize\ttfamily, text=DarkRed] at (0.48, -4.12) {[Sandbox] Uruchamianie ukrytych przypadków brzegowych i wydajnościowych... [Test 34 / 50]};
+        }
+
+        % KROK 3: Werdykt Accepted + Grywalizacja
+        \only<3>{
+            \draw[panel, draw=AccentGreen, fill=AccentGreen!8] (0.18, -4.50) rectangle (13.82, -3.38);
+            \node[badge, fill=AccentGreen] at (0.48, -3.65) {3};
+            \node[anchor=west, font=\scriptsize\bfseries, text=AccentGreen] at (0.72, -3.65) {Natychmiastowy werdykt i grywalizacja (krok 3/3 -- zaliczono!)};
+            \node[anchor=west, font=\scriptsize\bfseries, text=AccentGreen] at (0.48, -4.12) {Status: ACCEPTED (50/50 testów)};
+            \node[anchor=west, font=\scriptsize, text=black] at (4.95, -4.12) {\textbf{Czas:} \texttt{38 ms} \quad|\quad \textbf{Pamięć:} \texttt{14.2 MB} \quad|\quad \textcolor{MainRed}{\textbf{Seria (Streak): +1 dzień aktywności}}};
+        }
+
+        % --- DOLNY PASEK KONTRASTU (Podsumowanie dla komisji) ---
+        \draw[rounded corners=3pt, draw=MainRed!50, fill=LightRed, thick] (0, -5.72) rectangle (14.0, -4.82);
+        \node[anchor=west, font=\scriptsize, align=left] at (0.25, -5.27) {
+            \textbf{Tradycyjnie (np. Rosalind):} Pobierz plik \texttt{.txt} $\rightarrow$ skonfiguruj lokalnie Pythona $\rightarrow$ wklej wynik tekstowy w 5 minut.\\[2pt]
+            \textcolor{MainRed}{\textbf{Paradygmat LeetCode:}} Zero konfiguracji lokalnej, automatyczne testy brzegowe w chmurze i natychmiastowy feedback.
+        };
+    \end{tikzpicture}
+\end{frame}
+
 \begin{frame}{Motywacja wyboru tematu -- wyspecjalizowane odpowiedniki LeetCode}
     \centering
     \vspace{2pt}
