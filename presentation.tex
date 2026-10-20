@@ -1,4 +1,4 @@
-\documentclass[10pt,aspectratio=169]{beamer}
+\documentclass[9pt,aspectratio=169]{beamer}
 
 % Kodowanie i obsługa języka polskiego
 \usepackage[utf8]{inputenc}
@@ -37,17 +37,17 @@
     rulecolor=\color{MainRed!30},
     showstringspaces=false,
     breaklines=true,
-    aboveskip=3pt,
-    belowskip=3pt,
-    xleftmargin=4pt,
-    xrightmargin=4pt
+    aboveskip=2pt,
+    belowskip=2pt,
+    xleftmargin=3pt,
+    xrightmargin=3pt
 }
 
 % Metadane prezentacji
-\title[AlgoBio -- praca inżynierska]{AlgoBio -- wysoce skalowalna platforma\\do nauki algorytmów bioinformatyki}
+\title[AlgoBio -- praca inżynierska]{\texorpdfstring{AlgoBio -- wysoce skalowalna platforma\\do nauki algorytmów bioinformatyki}{AlgoBio -- wysoce skalowalna platforma do nauki algorytmów bioinformatyki}}
 \subtitle{Prezentacja pracy dyplomowej inżynierskiej}
-\author[Mikołaj Pawłoś]{Autor: \textbf{Mikołaj Pawłoś}\\[4pt]{\small Promotor: \textbf{dr inż. Mateusz Smoliński}}}
-\institute[FTIMS PŁ]{Wydział Fizyki Technicznej, Informatyki i Matematyki Stosowanej\\Politechnika Łódzka}
+\author[Mikołaj Pawłoś]{\texorpdfstring{Autor: \textbf{Mikołaj Pawłoś}\\[4pt]{\small Promotor: \textbf{dr inż. Mateusz Smoliński}}}{Mikołaj Pawłoś}}
+\institute[FTIMS PŁ]{\texorpdfstring{Wydział Fizyki Technicznej, Informatyki i Matematyki Stosowanej\\Politechnika Łódzka}{FTIMS PŁ}}
 \date{Październik 2026}
 
 \begin{document}
@@ -75,7 +75,6 @@
                     \item \textbf{getcracked.io} -- niskopoziomowy C++ oraz inżynieria systemowa.
                 \end{itemize}
             \end{block}
-            \vspace{2pt}
             \begin{alertblock}{Problem w domenie bioinformatyki}
                 Najpopularniejsza platforma \textbf{Rosalind} wymusza pobieranie plików \texttt{.txt}, lokalne uruchamianie skryptu w oknie 5 minut i ręczne wklejanie wyniku.
             \end{alertblock}
@@ -83,9 +82,9 @@
 
         \begin{column}{0.49\textwidth}
             \begin{exampleblock}{Porównanie podejść edukacyjnych}
-                \vspace{2pt}
                 \centering
-                \footnotesize
+                \scriptsize
+                \setlength{\tabcolsep}{4.5pt}
                 \begin{tabular}{@{}lccc@{}}
                     \toprule
                     \textbf{Cecha platformy} & \textbf{Rosalind} & \textbf{LeetCode} & \textbf{AlgoBio} \\
@@ -97,7 +96,6 @@
                     Grywalizacja (\textit{streaks}) & Nie & Tak & \textbf{Tak} \\
                     \bottomrule
                 \end{tabular}
-                \vspace{2pt}
             \end{exampleblock}
 
             \begin{block}{Cel pracy inżynierskiej}
@@ -128,26 +126,25 @@
         \begin{column}{0.50\textwidth}
             \begin{block}{Model działania z punktu widzenia użytkownika}
                 \centering
-                \vspace{3pt}
+                \vspace{1pt}
                 \begin{tikzpicture}[
-                    node distance=0.45cm and 0.6cm,
-                    box/.style={rectangle, rounded corners=3pt, draw=MainRed, fill=LightRed, very thick, minimum width=2.9cm, minimum height=0.65cm, align=center, font=\scriptsize\bfseries},
-                    mode/.style={rectangle, rounded corners=3pt, draw=DarkRed, fill=white, thick, minimum width=2.6cm, minimum height=0.65cm, align=center, font=\scriptsize},
-                    arr/.style={-{Stealth[scale=0.9]}, thick, draw=MainRed}
+                    node distance=0.38cm and 0.4cm,
+                    box/.style={rectangle, rounded corners=3pt, draw=MainRed, fill=LightRed, very thick, minimum width=4.6cm, minimum height=0.55cm, align=center, font=\scriptsize\bfseries},
+                    mode/.style={rectangle, rounded corners=3pt, draw=DarkRed, fill=white, thick, minimum width=2.45cm, minimum height=0.58cm, align=center, font=\scriptsize},
+                    arr/.style={-{Stealth[scale=0.85]}, thick, draw=MainRed}
                 ]
                     \node[box] (select) {1. Wybór problemu bioinformatycznego};
                     \node[box, below=of select] (editor) {2. Implementacja funkcji w edytorze};
-                    \node[mode, below left=0.5cm and -0.8cm of editor] (run) {\textbf{Tryb Run}\\Szybki test przykładowy};
-                    \node[mode, below right=0.5cm and -0.8cm of editor] (submit) {\textbf{Tryb Submit}\\Pełny zestaw testów};
-                    \node[box, below=1.4cm of editor, minimum width=5.6cm] (stats) {3. Werdykt, metryki czasu/pamięci i aktualizacja serii (\textit{streak})};
+                    \node[mode, below left=0.42cm and -0.95cm of editor] (run) {\textbf{Tryb Run}\\Testy przykładowe};
+                    \node[mode, below right=0.42cm and -0.95cm of editor] (submit) {\textbf{Tryb Submit}\\Pełny zbiór testów};
+                    \node[box, below=1.22cm of editor, minimum width=5.2cm] (stats) {3. Werdykt, czas/pamięć i aktualizacja serii (\textit{streak})};
 
                     \draw[arr] (select) -- (editor);
-                    \draw[arr] (editor.south) -- ++(0,-0.2) -| (run.north);
-                    \draw[arr] (editor.south) -- ++(0,-0.2) -| (submit.north);
-                    \draw[arr] (run.south) |- ([yshift=0.2cm]stats.north) -- (stats.north);
-                    \draw[arr] (submit.south) |- ([yshift=0.2cm]stats.north) -- (stats.north);
+                    \draw[arr] (editor.south) -- ++(0,-0.16) -| (run.north);
+                    \draw[arr] (editor.south) -- ++(0,-0.16) -| (submit.north);
+                    \draw[arr] (run.south) |- ([yshift=0.16cm]stats.north) -- (stats.north);
+                    \draw[arr] (submit.south) |- ([yshift=0.16cm]stats.north) -- (stats.north);
                 \end{tikzpicture}
-                \vspace{2pt}
             \end{block}
         \end{column}
     \end{columns}
@@ -164,11 +161,10 @@
             \begin{block}{Stos technologiczny}
                 \begin{itemize}
                     \item \textbf{Frontend (SPA):} Svelte 5, TypeScript, TailwindCSS v4, edytor \textbf{CodeMirror 6}.
-                    \item \textbf{Backend (REST API):} Python 3.14, \textbf{FastAPI}, SQLAlchemy 2.0, migracje Alembic, \textbf{PostgreSQL}.
+                    \item \textbf{Backend (REST API):} Python 3.14, \textbf{FastAPI}, SQLAlchemy 2.0, Alembic, \textbf{PostgreSQL}.
                     \item \textbf{Silnik wykonawczy:} skonteneryzowany klaster \textbf{Judge0} (bezpieczny sandbox).
                 \end{itemize}
             \end{block}
-            \vspace{2pt}
             \begin{exampleblock}{Podejście inżynierskie}
                 \begin{itemize}
                     \item \textbf{Vertical Slice Architecture (VSA):} podział na niezależne wycinki domenowe zamiast warstw technicznych.
@@ -180,31 +176,30 @@
         \begin{column}{0.51\textwidth}
             \begin{block}{Architektura Vertical Slice i komponenty}
                 \centering
-                \vspace{2pt}
+                \vspace{1pt}
                 \begin{tikzpicture}[
                     font=\scriptsize,
-                    slice/.style={rectangle, rounded corners=2pt, draw=MainRed, fill=LightRed, thick, minimum width=1.18cm, minimum height=1.35cm, align=center},
-                    layer/.style={rectangle, rounded corners=3pt, draw=DarkRed, fill=white, very thick, minimum width=6.4cm, minimum height=0.65cm, align=center, font=\scriptsize\bfseries},
-                    infra/.style={rectangle, rounded corners=3pt, draw=MainRed!80!black, fill=MainRed!10, thick, minimum width=3.0cm, minimum height=0.65cm, align=center, font=\scriptsize\bfseries},
+                    slice/.style={rectangle, rounded corners=2pt, draw=MainRed, fill=LightRed, thick, minimum width=1.12cm, minimum height=1.22cm, align=center},
+                    layer/.style={rectangle, rounded corners=3pt, draw=DarkRed, fill=white, very thick, minimum width=6.08cm, minimum height=0.58cm, align=center, font=\scriptsize\bfseries},
+                    infra/.style={rectangle, rounded corners=3pt, draw=MainRed!80!black, fill=MainRed!10, thick, minimum width=2.85cm, minimum height=0.58cm, align=center, font=\scriptsize\bfseries},
                     arr/.style={-{Stealth[scale=0.85]}, thick, draw=DarkRed}
                 ]
                     \node[layer] (fe) {Klient Webowy (Svelte 5 + CodeMirror 6)};
 
-                    \node[slice, below=0.45cm of fe, xshift=-2.6cm] (s1) {\textbf{auth}\\\tiny OAuth2\\\tiny JWT};
+                    \node[slice, below=0.38cm of fe, xshift=-2.48cm] (s1) {\textbf{auth}\\\tiny OAuth2\\\tiny JWT};
                     \node[slice, right=0.12cm of s1] (s2) {\textbf{problem}\\\tiny Zadania\\\tiny Testy};
                     \node[slice, right=0.12cm of s2] (s3) {\textbf{submission}\\\tiny Wrapper\\\tiny Ewaluacja};
                     \node[slice, right=0.12cm of s3] (s4) {\textbf{judge0}\\\tiny Klient\\\tiny Webhook};
                     \node[slice, right=0.12cm of s4] (s5) {\textbf{user}\\\tiny Profil\\\tiny Streaki};
 
-                    \node[infra, below=0.45cm of s2, xshift=-0.3cm] (db) {PostgreSQL 16};
-                    \node[infra, below=0.45cm of s4, xshift=0.1cm] (j0) {Sandbox Judge0};
+                    \node[infra, below=0.38cm of s2, xshift=-0.25cm] (db) {PostgreSQL 16};
+                    \node[infra, below=0.38cm of s4, xshift=0.1cm] (j0) {Sandbox Judge0};
 
                     \draw[arr, <->] (fe.south) -- (s3.north);
                     \draw[arr, <->] (s2.south) -- (db.north);
                     \draw[arr, <->] (s3.south) -- (db.north east);
                     \draw[arr, <->] (s4.south) -- (j0.north);
                 \end{tikzpicture}
-                \vspace{2pt}
             \end{block}
         \end{column}
     \end{columns}
@@ -215,8 +210,8 @@
 % =============================================================================
 \begin{frame}[fragile]{Mechanizm opakowywania (wrappowania) i egzekucji kodu}
     \begin{columns}[T,onlytextwidth]
-        \begin{column}{0.44\textwidth}
-            \textbf{\footnotesize 1. Kod pisany przez użytkownika:}
+        \begin{column}{0.45\textwidth}
+            \textbf{\scriptsize 1. Kod pisany przez użytkownika:}
             \begin{lstlisting}
 class Solution:
     def gc_content(self, dna: str) -> float:
@@ -224,17 +219,15 @@ class Solution:
         return round(gc / len(dna) * 100, 2)
             \end{lstlisting}
 
-            \textbf{\footnotesize 2. Paczka po opakowaniu przez backend:}
+            \textbf{\scriptsize 2. Paczka po opakowaniu przez backend:}
             \begin{lstlisting}
 import sys, json
 from typing import List, Dict, Optional
 from algobio_types import DNASequence
 
 # --- Wstrzykniety kod uzytkownika ---
-class Solution:
-    def gc_content(self, dna: str) -> float:
-        ...
-# --- Automatyczny harness uruchomieniowy ---
+class Solution: ...
+# --- Automatyczny runner I/O ---
 if __name__ == "__main__":
     args = json.loads(sys.stdin.read())
     res = Solution().gc_content(*args)
@@ -242,20 +235,19 @@ if __name__ == "__main__":
             \end{lstlisting}
         \end{column}
 
-        \begin{column}{0.53\textwidth}
+        \begin{column}{0.52\textwidth}
             \begin{block}{Asynchroniczny potok ewaluacji zgłoszenia}
                 \centering
-                \vspace{2pt}
                 \begin{tikzpicture}[
                     font=\scriptsize,
-                    stepbox/.style={rectangle, rounded corners=2pt, draw=MainRed, fill=LightRed, thick, minimum width=6.3cm, minimum height=0.52cm, align=center},
-                    arr/.style={-{Stealth[scale=0.8]}, thick, draw=MainRed}
+                    stepbox/.style={rectangle, rounded corners=2pt, draw=MainRed, fill=LightRed, thick, minimum width=5.9cm, minimum height=0.44cm, align=center},
+                    arr/.style={-{Stealth[scale=0.75]}, thick, draw=MainRed}
                 ]
                     \node[stepbox] (p1) {\textbf{1.} Przesłanie czystej funkcji z edytora (\texttt{POST /submit})};
-                    \node[stepbox, below=0.22cm of p1] (p2) {\textbf{2.} Dołączenie importów, klas domenowych i startera I/O};
-                    \node[stepbox, below=0.22cm of p2] (p3) {\textbf{3.} Zlecenie paczki testów do kontenera \textbf{Judge0} (zapis \texttt{PROCESSING})};
-                    \node[stepbox, below=0.22cm of p3] (p4) {\textbf{4.} Odbiór asynchronicznych callbacków (\texttt{PUT /judge0/submit/\{id\}})};
-                    \node[stepbox, below=0.22cm of p4] (p5) {\textbf{5.} Agregacja wyników testów, zapis werdyktu i naliczenie serii};
+                    \node[stepbox, below=0.16cm of p1] (p2) {\textbf{2.} Dołączenie importów, klas domenowych i startera I/O};
+                    \node[stepbox, below=0.16cm of p2] (p3) {\textbf{3.} Zlecenie paczki testów do \textbf{Judge0} (status \texttt{PROCESSING})};
+                    \node[stepbox, below=0.16cm of p3] (p4) {\textbf{4.} Odbiór asynchronicznych callbacków (\texttt{PUT /judge0/submit/\{id\}})};
+                    \node[stepbox, below=0.16cm of p4] (p5) {\textbf{5.} Agregacja wyników testów, zapis werdyktu i serii};
 
                     \draw[arr] (p1) -- (p2);
                     \draw[arr] (p2) -- (p3);
@@ -264,7 +256,7 @@ if __name__ == "__main__":
                 \end{tikzpicture}
             \end{block}
             \begin{exampleblock}{Kluczowa korzyść architektoniczna}
-                Użytkownik skupia się wyłącznie na algorytmie bioinformatycznym, a serwer API nie jest blokowany oczekiwaniem na wykonanie kodu w sandboxie.
+                Użytkownik skupia się wyłącznie na algorytmie bioinformatycznym, a serwer API nie jest blokowany wykonaniem w sandboxie.
             \end{exampleblock}
         \end{column}
     \end{columns}
@@ -293,7 +285,7 @@ if __name__ == "__main__":
                     \item \textbf{Bezpieczne logowanie:} integracja z protokołem \textbf{Google OAuth2} oraz bezstanowa autoryzacja sesji tokenami \textbf{JWT}.
                     \item \textbf{System dziennych serii (\textit{streaks}):} automatyczne naliczanie kolejnych dni aktywności po pierwszym zaakceptowanym rozwiązaniu w danym dniu.
                     \item \textbf{Wizualizacja postępów:} roczna mapa aktywności (\textit{heatmap}) w profilu użytkownika oraz animacja po zaliczeniu zadania.
-                    \item \textbf{Wielojęzyczność:} pełne wsparcie internacjonalizacji interfejsu (\texttt{svelte-i18n}).
+                    \item \textbf{Wielojęzyczność:} wsparcie internacjonalizacji interfejsu (\texttt{svelte-i18n}).
                 \end{itemize}
             \end{exampleblock}
         \end{column}
@@ -354,7 +346,7 @@ if __name__ == "__main__":
         \end{column}
     \end{columns}
 
-    \vspace{8pt}
+    \vspace{6pt}
     \centering
     {\Large \textcolor{MainRed}{\textbf{Dziękuję za uwagę!}}}\\[2pt]
     {\small Zapraszam do zadawania pytań.}
