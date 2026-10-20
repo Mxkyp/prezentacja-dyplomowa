@@ -335,48 +335,85 @@
 \end{frame}
 
 % =============================================================================
-% SEKCJA 2: Projekt AlgoBio
+% SEKCJA 2: Zrealizowana platforma
 % =============================================================================
-\section{Projekt AlgoBio}
+\section{Zrealizowana platforma}
 
-\begin{frame}{Koncepcja systemu AlgoBio -- perspektywa funkcjonalna}
-    \begin{columns}[T,onlytextwidth]
-        \begin{column}{0.47\textwidth}
-            \begin{block}{Główne założenia projektu}
-                \textbf{AlgoBio} to interaktywna aplikacja webowa pozwalająca na rozwiązywanie problemów bioinformatycznych bezpośrednio w przeglądarce:
-                \begin{itemize}
-                    \item \textbf{Gość:} przeglądanie katalogu zadań oraz rejestracja przez OAuth2.
-                    \item \textbf{Użytkownik:} pisanie kodu w Pythonie, szybkie testowanie (\texttt{Run}), pełna ewaluacja (\texttt{Submit}) oraz śledzenie statystyk.
-                    \item \textbf{Administrator:} wgląd w globalne statystyki platformy i zarządzanie bazą problemów.
-                \end{itemize}
-            \end{block}
-        \end{column}
+\begin{frame}{Rezultat pracy inżynierskiej -- zrealizowana platforma AlgoBio}
+    \centering
+    \vspace{1pt}
+    \begin{tikzpicture}[
+        x=1cm, y=1cm,
+        titlebar/.style={
+            rectangle,
+            rounded corners=3pt,
+            fill=DarkRed,
+            text=white,
+            font=\scriptsize\bfseries,
+            minimum width=13.6cm,
+            minimum height=0.52cm,
+            align=center
+        },
+        imgbox/.style={
+            rectangle,
+            rounded corners=3pt,
+            draw=DarkRed!50,
+            fill=white,
+            thick,
+            inner sep=2pt
+        }
+    ]
+        % Stały obszar rysowania zapobiegający przesunięciom między krokami 1-5
+        \useasboundingbox (-6.9, -5.65) rectangle (6.9, 0.1);
 
-        \begin{column}{0.50\textwidth}
-            \begin{block}{Model działania z punktu widzenia użytkownika}
-                \centering
-                \vspace{1pt}
-                \begin{tikzpicture}[
-                    node distance=0.38cm and 0.4cm,
-                    box/.style={rectangle, rounded corners=3pt, draw=MainRed, fill=LightRed, very thick, minimum width=4.6cm, minimum height=0.55cm, align=center, font=\scriptsize\bfseries},
-                    mode/.style={rectangle, rounded corners=3pt, draw=DarkRed, fill=white, thick, minimum width=2.45cm, minimum height=0.58cm, align=center, font=\scriptsize},
-                    arr/.style={-{Stealth[scale=0.85]}, thick, draw=MainRed}
-                ]
-                    \node[box] (select) {1. Wybór problemu bioinformatycznego};
-                    \node[box, below=of select] (editor) {2. Implementacja funkcji w edytorze};
-                    \node[mode, below left=0.42cm and -1.65cm of editor] (run) {\textbf{Tryb Run}\\Testy przykładowe};
-                    \node[mode, below right=0.42cm and -1.65cm of editor] (submit) {\textbf{Tryb Submit}\\Pełny zbiór testów};
-                    \node[box, below=1.22cm of editor, minimum width=5.2cm] (stats) {3. Werdykt, czas/pamięć i aktualizacja serii (\textit{streak})};
+        % --- KROK 1: Logowanie OAuth2 ---
+        \only<1>{
+            \node[titlebar] at (0, -0.25) {1/5: Bezpieczne uwierzytelnianie użytkowników (OAuth 2.0 -- Google oraz GitHub)};
+            \node[imgbox] at (0, -3.15) {
+                \includegraphics[height=4.85cm, trim=450 220 450 220, clip]{oauth.png}
+            };
+        }
 
-                    \draw[arr] (select) -- (editor);
-                    \draw[arr] (editor.south) -- ++(0,-0.16) -| (run.north);
-                    \draw[arr] (editor.south) -- ++(0,-0.16) -| (submit.north);
-                    \draw[arr] (run.south) |- ([yshift=0.16cm]stats.north) -- (stats.north);
-                    \draw[arr] (submit.south) |- ([yshift=0.16cm]stats.north) -- (stats.north);
-                \end{tikzpicture}
-            \end{block}
-        \end{column}
-    \end{columns}
+        % --- KROK 2: Widok rozwiązywania problemu (IDE) ---
+        \only<2>{
+            \node[titlebar] at (0, -0.25) {2/5: Dwuokienkowy interfejs problemu, edytor CodeMirror 6 oraz przypadki testowe};
+            \node[imgbox] (probimg) at (0, -3.15) {
+                \includegraphics[height=4.85cm]{problemPage.png}
+            };
+            % Zakrycie wyłącznie linijki z roboczym adresem e-mail pod imieniem i nazwiskiem
+            \begin{scope}[shift={(probimg.south west)}, x={($(probimg.south east)-(probimg.south west)$)}, y={($(probimg.north west)-(probimg.south west)$)}]
+                \fill[white] (0.875, 0.890) rectangle (0.968, 0.905);
+            \end{scope}
+        }
+
+        % --- KROK 3: Tryb Run -- wykrycie błędu na jawnym przypadku testowym ---
+        \only<3>{
+            \node[titlebar] at (0, -0.25) {3/5: Tryb Run -- diagnostyka błędnego przypadku testowego (\textit{Expected} vs \textit{Actual})};
+            \node[imgbox] at (0, -3.15) {
+                \includegraphics[height=4.85cm]{invalidRun.png}
+            };
+        }
+
+        % --- KROK 4: Werdykt zgłoszenia (Submit) i modal grywalizacji (Streak) ---
+        \only<4>{
+            \node[titlebar] at (0, -0.25) {4/5: Tryb Submit -- zaliczenie pełnego zbioru testów i modal serii (\textit{Streak})};
+            \node[imgbox] at (0, -3.15) {
+                \includegraphics[height=4.85cm]{success2.png}
+            };
+        }
+
+        % --- KROK 5: Profil użytkownika i roczna mapa aktywności (Heatmap) ---
+        \only<5>{
+            \node[titlebar] at (0, -0.25) {5/5: Profil użytkownika -- statystyki serii (\textit{Streaks}) oraz roczna mapa aktywności};
+            \node[imgbox] (heatimg) at (0, -3.15) {
+                \includegraphics[height=4.85cm, trim=380 0 380 0, clip]{heatmap.png}
+            };
+            % Zakrycie wyłącznie linijki z roboczym adresem e-mail pod imieniem i nazwiskiem
+            \begin{scope}[shift={(heatimg.south west)}, x={($(heatimg.south east)-(heatimg.south west)$)}, y={($(heatimg.north west)-(heatimg.south west)$)}]
+                \fill[white] (0.110, 0.600) rectangle (0.250, 0.650);
+            \end{scope}
+        }
+    \end{tikzpicture}
 \end{frame}
 
 % =============================================================================
@@ -497,89 +534,7 @@ if __name__ == "__main__":
 \end{frame}
 
 % =============================================================================
-% SEKCJA 4: Rezultat implementacji
-% =============================================================================
-\section{Rezultat implementacji}
-
-\begin{frame}{Rezultat pracy inżynierskiej -- zrealizowana platforma AlgoBio}
-    \centering
-    \vspace{1pt}
-    \begin{tikzpicture}[
-        x=1cm, y=1cm,
-        titlebar/.style={
-            rectangle,
-            rounded corners=3pt,
-            fill=DarkRed,
-            text=white,
-            font=\scriptsize\bfseries,
-            minimum width=13.6cm,
-            minimum height=0.52cm,
-            align=center
-        },
-        imgbox/.style={
-            rectangle,
-            rounded corners=3pt,
-            draw=DarkRed!50,
-            fill=white,
-            thick,
-            inner sep=2pt
-        }
-    ]
-        % Stały obszar rysowania zapobiegający przesunięciom między krokami 1-5
-        \useasboundingbox (-6.9, -5.65) rectangle (6.9, 0.1);
-
-        % --- KROK 1: Logowanie OAuth2 ---
-        \only<1>{
-            \node[titlebar] at (0, -0.25) {1/5: Bezpieczne uwierzytelnianie użytkowników (OAuth 2.0 -- Google oraz GitHub)};
-            \node[imgbox] at (0, -3.15) {
-                \includegraphics[height=4.85cm, trim=450 220 450 220, clip]{oauth.png}
-            };
-        }
-
-        % --- KROK 2: Widok rozwiązywania problemu (IDE) ---
-        \only<2>{
-            \node[titlebar] at (0, -0.25) {2/5: Dwuokienkowy interfejs problemu, edytor CodeMirror 6 oraz przypadki testowe};
-            \node[imgbox] (probimg) at (0, -3.15) {
-                \includegraphics[height=4.85cm]{problemPage.png}
-            };
-            % Zakrycie wyłącznie linijki z roboczym adresem e-mail pod imieniem i nazwiskiem
-            \begin{scope}[shift={(probimg.south west)}, x={($(probimg.south east)-(probimg.south west)$)}, y={($(probimg.north west)-(probimg.south west)$)}]
-                \fill[white] (0.875, 0.890) rectangle (0.968, 0.905);
-            \end{scope}
-        }
-
-        % --- KROK 3: Tryb Run -- wykrycie błędu na jawnym przypadku testowym ---
-        \only<3>{
-            \node[titlebar] at (0, -0.25) {3/5: Tryb Run -- diagnostyka błędnego przypadku testowego (\textit{Expected} vs \textit{Actual})};
-            \node[imgbox] at (0, -3.15) {
-                \includegraphics[height=4.85cm]{invalidRun.png}
-            };
-        }
-
-        % --- KROK 4: Werdykt zgłoszenia (Submit) i modal grywalizacji (Streak) ---
-        \only<4>{
-            \node[titlebar] at (0, -0.25) {4/5: Tryb Submit -- zaliczenie pełnego zbioru testów i modal serii (\textit{Streak})};
-            \node[imgbox] at (0, -3.15) {
-                \includegraphics[height=4.85cm]{success2.png}
-            };
-        }
-
-        % --- KROK 5: Profil użytkownika i roczna mapa aktywności (Heatmap) ---
-        \only<5>{
-            \node[titlebar] at (0, -0.25) {5/5: Profil użytkownika -- statystyki serii (\textit{Streaks}) oraz roczna mapa aktywności};
-            \node[imgbox] (heatimg) at (0, -3.15) {
-                \includegraphics[height=4.85cm, trim=380 0 380 0, clip]{heatmap.png}
-            };
-            % Zakrycie wyłącznie linijki z roboczym adresem e-mail pod imieniem i nazwiskiem
-            \begin{scope}[shift={(heatimg.south west)}, x={($(heatimg.south east)-(heatimg.south west)$)}, y={($(heatimg.north west)-(heatimg.south west)$)}]
-                \fill[white] (0.110, 0.600) rectangle (0.250, 0.650);
-            \end{scope}
-        }
-    \end{tikzpicture}
-\end{frame}
-
-% =============================================================================
-% SEKCJA 5: Wnioski i wyzwania
+% SEKCJA 4: Wnioski i wyzwania
 % =============================================================================
 \section{Wnioski i wyzwania}
 
