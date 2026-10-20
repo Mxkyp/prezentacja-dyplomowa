@@ -25,6 +25,7 @@
 \usecolortheme[named=MainRed]{structure}
 \setbeamercolor{alerted text}{fg=MainRed}
 \setbeamercolor{example text}{fg=AccentGreen}
+\setbeamerfont{section in head/foot}{size=\fontsize{5}{5.7}\selectfont}
 
 % Konfiguracja listingów kodu
 \lstset{
@@ -123,27 +124,27 @@
             align=center
         }
     ]
-        % Stały obszar rysowania (brak skakania slajdu między krokami 1-3)
-        \useasboundingbox (-0.1, -5.65) rectangle (14.1, 0.1);
+        % Stały obszar rysowania mieszczący się w \textwidth (14.0cm)
+        \useasboundingbox (0, -5.55) rectangle (13.85, 0.05);
 
         % Ramka przeglądarki
-        \draw[browser] (0, -5.50) rectangle (14.0, 0);
+        \draw[browser] (0.05, -5.50) rectangle (13.80, 0);
 
         % Pasek adresu przeglądarki
-        \fill[DarkRed, rounded corners=2pt] (0.08, -0.54) rectangle (13.92, -0.08);
-        \fill[MainRed!70] (0.35, -0.31) circle (0.09cm);
-        \fill[yellow!80!orange] (0.62, -0.31) circle (0.09cm);
-        \fill[AccentGreen!80!white] (0.89, -0.31) circle (0.09cm);
-        \node[anchor=west, text=white, font=\scriptsize\ttfamily] at (1.25, -0.31) {https://leetcode.com};
+        \fill[DarkRed, rounded corners=2pt] (0.13, -0.54) rectangle (13.72, -0.08);
+        \fill[MainRed!70] (0.38, -0.31) circle (0.09cm);
+        \fill[yellow!80!orange] (0.65, -0.31) circle (0.09cm);
+        \fill[AccentGreen!80!white] (0.92, -0.31) circle (0.09cm);
+        \node[anchor=west, text=white, font=\scriptsize\ttfamily] at (1.28, -0.31) {https://leetcode.com};
 
         % =====================================================================
         % OKIENKO 1: OPIS PROBLEMU (widoczne w krokach 1, 2, 3)
         % =====================================================================
-        \draw[panel] (0.20, -3.75) rectangle (5.65, -0.68);
+        \draw[panel] (0.22, -3.75) rectangle (5.60, -0.68);
         \node[badge] at (0.52, -0.98) {1};
         \node[anchor=west, font=\scriptsize\bfseries, text=DarkRed] at (0.78, -0.98) {Opis problemu};
 
-        \node[anchor=north west, align=left, font=\scriptsize, text width=5.05cm] at (0.38, -1.28) {
+        \node[anchor=north west, align=left, font=\scriptsize, text width=5.0cm] at (0.38, -1.28) {
             \textbf{Zadanie:} Odczyt z sekwenatora (\texttt{FastqRead}) zawiera sekwencję zasad (\texttt{seq}) oraz listę ocen jakości Phred (\texttt{phred}). Zwróć sekwencję zawierającą wyłącznie nukleotydy o jakości $\ge \texttt{min\_q}$.\\[5pt]
             \textbf{Przykład 1:}\\
             \texttt{Wejście: read = FastqRead(\textquotedbl AGCT\textquotedbl,}\\
@@ -154,26 +155,26 @@
         % =====================================================================
         % OKIENKO 2: EDYTOR KODU (widoczne w krokach 1, 2, 3)
         % =====================================================================
-        \draw[panel, fill=white] (5.85, -3.75) rectangle (13.80, -0.68);
-        \node[badge] at (6.17, -0.98) {2};
-        \node[anchor=west, font=\scriptsize\bfseries, text=DarkRed] at (6.43, -0.98) {Edytor kodu w przeglądarce};
+        \draw[panel, fill=white] (5.78, -3.75) rectangle (13.65, -0.68);
+        \node[badge] at (6.10, -0.98) {2};
+        \node[anchor=west, font=\scriptsize\bfseries, text=DarkRed] at (6.36, -0.98) {Edytor kodu w przeglądarce};
 
         % KROK 1: Sam szablon funkcji z komentarzem typu (bez implementacji użytkownika)
         \only<1>{
-            \node[anchor=north west, align=left, font=\scriptsize\ttfamily, text width=7.55cm] at (6.05, -1.28) {
+            \node[anchor=north west, align=left, font=\scriptsize\ttfamily, text width=7.45cm] at (5.98, -1.28) {
                 \textcolor{MainRed}{\textbf{class}} \textbf{Solution}:\\
                 \hspace*{1.0em}\textcolor{gray}{\# class FastqRead:}\\
                 \hspace*{1.0em}\textcolor{gray}{\# \ \ \ \ seq: str; phred: list[int]}\\
                 \hspace*{1.0em}\textcolor{MainRed}{\textbf{def}} \textbf{filter\_bases}(self, read: \textbf{FastqRead}, min\_q: \textbf{int}) -> \textbf{str}:\\
                 \hspace*{2.0em}\textcolor{MainRed}{\textbf{pass}}
             };
-            \node[btn] at (10.25, -3.32) {Run};
-            \node[btn] at (12.05, -3.32) {Submit};
+            \node[btn] at (10.15, -3.32) {Run};
+            \node[btn] at (11.95, -3.32) {Submit};
         }
 
         % KROK 2 i 3: Implementacja użytkownika
         \only<2-3>{
-            \node[anchor=north west, align=left, font=\scriptsize\ttfamily, text width=7.55cm] at (6.05, -1.28) {
+            \node[anchor=north west, align=left, font=\scriptsize\ttfamily, text width=7.45cm] at (5.98, -1.28) {
                 \textcolor{MainRed}{\textbf{class}} \textbf{Solution}:\\
                 \hspace*{1.0em}\textcolor{gray}{\# class FastqRead:}\\
                 \hspace*{1.0em}\textcolor{gray}{\# \ \ \ \ seq: str; phred: list[int]}\\
@@ -186,14 +187,14 @@
 
         % Przyciski w kroku 2 (wciśnięty Run)
         \only<2>{
-            \node[btnactive] at (10.25, -3.32) {Run \checkmark};
-            \node[btn] at (12.05, -3.32) {Submit};
+            \node[btnactive] at (10.15, -3.32) {Run \checkmark};
+            \node[btn] at (11.95, -3.32) {Submit};
         }
 
         % Przyciski w kroku 3 (wciśnięty Submit -- zielony jak Run)
         \only<3>{
-            \node[btn] at (10.25, -3.32) {Run};
-            \node[btnactive] at (12.05, -3.32) {Submit \checkmark};
+            \node[btn] at (10.15, -3.32) {Run};
+            \node[btnactive] at (11.95, -3.32) {Submit \checkmark};
         }
 
         % =====================================================================
@@ -201,24 +202,24 @@
         % =====================================================================
         % KROK 2: 3 udane przypadki testowe po kliknięciu Run (input -> output)
         \only<2>{
-            \draw[panel, draw=AccentGreen!70, fill=CodeBg] (0.20, -5.32) rectangle (13.80, -3.92);
+            \draw[panel, draw=AccentGreen!70, fill=CodeBg] (0.22, -5.32) rectangle (13.65, -3.92);
             \node[badge, fill=AccentGreen] at (0.52, -4.22) {3};
             \node[anchor=west, font=\scriptsize\bfseries, text=AccentGreen] at (0.78, -4.22) {Wynik uruchomienia próbnego (Run) -- 3 jawne przypadki testowe};
 
-            \node[testok, font=\tiny\bfseries] at (2.55, -4.85) {\checkmark\ \texttt{(\textquotedbl AGCT\textquotedbl,[35,12,40,38]), 30} $\rightarrow$ \texttt{\textquotedbl ACT\textquotedbl}};
-            \node[testok, font=\tiny\bfseries] at (7.00, -4.85) {\checkmark\ \texttt{(\textquotedbl GGCC\textquotedbl,[40,40,40,40]), 20} $\rightarrow$ \texttt{\textquotedbl GGCC\textquotedbl}};
-            \node[testok, font=\tiny\bfseries] at (11.45, -4.85) {\checkmark\ \texttt{(\textquotedbl ATAT\textquotedbl,[10,15,12,18]), 25} $\rightarrow$ \texttt{\textquotedbl\textquotedbl}};
+            \node[testok, font=\tiny\bfseries] at (2.52, -4.85) {\checkmark\ \texttt{(\textquotedbl AGCT\textquotedbl,[35,12,40,38]), 30} $\rightarrow$ \texttt{\textquotedbl ACT\textquotedbl}};
+            \node[testok, font=\tiny\bfseries] at (6.93, -4.85) {\checkmark\ \texttt{(\textquotedbl GGCC\textquotedbl,[40,40,40,40]), 20} $\rightarrow$ \texttt{\textquotedbl GGCC\textquotedbl}};
+            \node[testok, font=\tiny\bfseries] at (11.35, -4.85) {\checkmark\ \texttt{(\textquotedbl ATAT\textquotedbl,[10,15,12,18]), 25} $\rightarrow$ \texttt{\textquotedbl\textquotedbl}};
         }
 
         % KROK 3: Pełna ewaluacja Submit + Grywalizacja (spójna kolorystyka)
         \only<3>{
-            \draw[panel, draw=AccentGreen!70, fill=CodeBg] (0.20, -5.32) rectangle (13.80, -3.92);
+            \draw[panel, draw=AccentGreen!70, fill=CodeBg] (0.22, -5.32) rectangle (13.65, -3.92);
             \node[badge, fill=AccentGreen] at (0.52, -4.22) {3};
             \node[anchor=west, font=\scriptsize\bfseries, text=AccentGreen] at (0.78, -4.22) {Pełna weryfikacja w chmurze (Submit) oraz grywalizacja};
 
-            \node[testok] at (2.55, -4.85) {\checkmark\ \textbf{ACCEPTED (50 / 50 testów)}};
-            \node[rectangle, rounded corners=2pt, draw=DarkRed!40, fill=white, font=\scriptsize, minimum width=4.15cm, minimum height=0.52cm, align=center] at (7.00, -4.85) {\textbf{Czas:} \texttt{38 ms} \quad|\quad \textbf{RAM:} \texttt{14.2 MB}};
-            \node[testok] at (11.45, -4.85) {\checkmark\ \textbf{Seria (\textit{Streak}): +1 dzień!}};
+            \node[testok] at (2.52, -4.85) {\checkmark\ \textbf{ACCEPTED (50 / 50 testów)}};
+            \node[rectangle, rounded corners=2pt, draw=DarkRed!40, fill=white, font=\scriptsize, minimum width=4.15cm, minimum height=0.52cm, align=center] at (6.93, -4.85) {\textbf{Czas:} \texttt{38 ms} \quad|\quad \textbf{RAM:} \texttt{14.2 MB}};
+            \node[testok] at (11.35, -4.85) {\checkmark\ \textbf{Seria (\textit{Streak}): +1 dzień!}};
         }
     \end{tikzpicture}
 \end{frame}
@@ -234,8 +235,8 @@
             draw=DarkRed!60,
             fill=CodeBg,
             thick,
-            minimum width=3.35cm,
-            minimum height=2.65cm
+            minimum width=3.25cm,
+            minimum height=2.62cm
         },
         biocard/.style={
             rectangle,
@@ -244,8 +245,8 @@
             fill=LightRed,
             very thick,
             dashed,
-            minimum width=3.35cm,
-            minimum height=2.65cm
+            minimum width=3.25cm,
+            minimum height=2.62cm
         },
         cardtitle/.style={
             rectangle,
@@ -253,7 +254,7 @@
             fill=DarkRed,
             text=white,
             font=\scriptsize\bfseries,
-            minimum width=3.15cm,
+            minimum width=3.05cm,
             minimum height=0.44cm,
             align=center
         },
@@ -263,7 +264,7 @@
             fill=MainRed,
             text=white,
             font=\scriptsize\bfseries,
-            minimum width=3.15cm,
+            minimum width=3.05cm,
             minimum height=0.44cm,
             align=center
         },
@@ -274,9 +275,9 @@
             fill=white,
             font=\scriptsize\bfseries,
             text=DarkRed,
-            inner xsep=4pt,
+            inner xsep=3pt,
             inner ysep=2.2pt,
-            minimum width=2.9cm,
+            minimum width=2.85cm,
             align=center
         }
     ]
@@ -290,44 +291,44 @@
         \node[pill] at ([yshift=-0.84cm]c1.center) {Brainstellar};
 
         % 2. Machine Learning & Data Science
-        \node[card] (c2) at (3.65, 0) {};
+        \node[card] (c2) at (3.50, 0) {};
         \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c2.north) {2. ML \& Data Science};
         \node[pill] at ([yshift=0.32cm]c2.center) {Deep-ML};
         \node[pill] at ([yshift=-0.18cm]c2.center) {DataLemur};
         \node[pill] at ([yshift=-0.68cm]c2.center) {StrataScratch};
 
         % 3. Frontend Engineering
-        \node[card] (c3) at (7.3, 0) {};
+        \node[card] (c3) at (7.00, 0) {};
         \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c3.north) {3. Frontend Engineering};
         \node[pill] at ([yshift=0.12cm]c3.center) {GreatFrontEnd};
         \node[pill] at ([yshift=-0.48cm]c3.center) {BFE.dev (BigFrontend)};
 
         % 4. Linux, DevOps & SRE
-        \node[card] (c4) at (10.95, 0) {};
+        \node[card] (c4) at (10.50, 0) {};
         \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c4.north) {4. Linux, DevOps \& SRE};
         \node[pill] at ([yshift=0.12cm]c4.center) {SadServers};
         \node[pill] at ([yshift=-0.48cm]c4.center) {Killercoda};
 
         % --- RZĄD 2 ---
         % 5. Hardware & Digital Logic
-        \node[card] (c5) at (0, -2.95) {};
+        \node[card] (c5) at (0, -2.90) {};
         \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c5.north) {5. Hardware (FPGA/ASIC)};
         \node[pill] at ([yshift=-0.18cm]c5.center) {HDLBits};
 
         % 6. Databases & SQL
-        \node[card] (c6) at (3.65, -2.95) {};
+        \node[card] (c6) at (3.50, -2.90) {};
         \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c6.north) {6. Bazy danych i SQL};
         \node[pill] at ([yshift=0.12cm]c6.center) {PGExercises};
         \node[pill] at ([yshift=-0.48cm]c6.center) {SQLZoo};
 
         % 7. Cybersecurity
-        \node[card] (c7) at (7.3, -2.95) {};
+        \node[card] (c7) at (7.00, -2.90) {};
         \node[cardtitle, anchor=north] at ([yshift=-0.1cm]c7.north) {7. Cybersecurity};
         \node[pill] at ([yshift=0.12cm]c7.center) {OverTheWire (Bandit)};
         \node[pill] at ([yshift=-0.48cm]c7.center) {PortSwigger Academy};
 
         % 8. Bioinformatyka ???
-        \node[biocard] (c8) at (10.95, -2.95) {};
+        \node[biocard] (c8) at (10.50, -2.90) {};
         \node[biotitle, anchor=north] at ([yshift=-0.1cm]c8.north) {8. Bioinformatyka};
         \node[font=\Huge\bfseries, text=MainRed] at ([yshift=-0.2cm]c8.center) {???};
     \end{tikzpicture}
@@ -363,8 +364,8 @@
                 ]
                     \node[box] (select) {1. Wybór problemu bioinformatycznego};
                     \node[box, below=of select] (editor) {2. Implementacja funkcji w edytorze};
-                    \node[mode, below left=0.42cm and -0.95cm of editor] (run) {\textbf{Tryb Run}\\Testy przykładowe};
-                    \node[mode, below right=0.42cm and -0.95cm of editor] (submit) {\textbf{Tryb Submit}\\Pełny zbiór testów};
+                    \node[mode, below left=0.42cm and -1.65cm of editor] (run) {\textbf{Tryb Run}\\Testy przykładowe};
+                    \node[mode, below right=0.42cm and -1.65cm of editor] (submit) {\textbf{Tryb Submit}\\Pełny zbiór testów};
                     \node[box, below=1.22cm of editor, minimum width=5.2cm] (stats) {3. Werdykt, czas/pamięć i aktualizacja serii (\textit{streak})};
 
                     \draw[arr] (select) -- (editor);
@@ -384,17 +385,21 @@
 \section{Strategia i architektura}
 
 \begin{frame}{Strategia rozwiązania i architektura systemu}
+    \vspace{-4pt}
     \begin{columns}[T,onlytextwidth]
         \begin{column}{0.46\textwidth}
             \begin{block}{Stos technologiczny}
-                \begin{itemize}
+                \footnotesize
+                \begin{itemize}\setlength{\itemsep}{0pt}
                     \item \textbf{Frontend (SPA):} Svelte 5, TypeScript, TailwindCSS v4, edytor \textbf{CodeMirror 6}.
                     \item \textbf{Backend (REST API):} Python 3.14, \textbf{FastAPI}, SQLAlchemy 2.0, Alembic, \textbf{PostgreSQL}.
                     \item \textbf{Silnik wykonawczy:} skonteneryzowany klaster \textbf{Judge0} (bezpieczny sandbox).
                 \end{itemize}
             \end{block}
+            \vspace{-4pt}
             \begin{exampleblock}{Podejście inżynierskie}
-                \begin{itemize}
+                \footnotesize
+                \begin{itemize}\setlength{\itemsep}{0pt}
                     \item \textbf{Vertical Slice Architecture (VSA):} podział na niezależne wycinki domenowe zamiast warstw technicznych.
                     \item \textbf{Testcontainers:} automatyczne testy integracyjne na rzeczywistej bazie PostgreSQL.
                 \end{itemize}
@@ -404,24 +409,23 @@
         \begin{column}{0.51\textwidth}
             \begin{block}{Architektura Vertical Slice i komponenty}
                 \centering
-                \vspace{1pt}
                 \begin{tikzpicture}[
                     font=\scriptsize,
-                    slice/.style={rectangle, rounded corners=2pt, draw=MainRed, fill=LightRed, thick, minimum width=1.12cm, minimum height=1.22cm, align=center},
-                    layer/.style={rectangle, rounded corners=3pt, draw=DarkRed, fill=white, very thick, minimum width=6.08cm, minimum height=0.58cm, align=center, font=\scriptsize\bfseries},
-                    infra/.style={rectangle, rounded corners=3pt, draw=MainRed!80!black, fill=MainRed!10, thick, minimum width=2.85cm, minimum height=0.58cm, align=center, font=\scriptsize\bfseries},
+                    slice/.style={rectangle, rounded corners=2pt, draw=MainRed, fill=LightRed, thick, minimum width=1.10cm, minimum height=1.10cm, align=center},
+                    layer/.style={rectangle, rounded corners=3pt, draw=DarkRed, fill=white, very thick, minimum width=5.98cm, minimum height=0.52cm, align=center, font=\scriptsize\bfseries},
+                    infra/.style={rectangle, rounded corners=3pt, draw=MainRed!80!black, fill=MainRed!10, thick, minimum width=2.80cm, minimum height=0.52cm, align=center, font=\scriptsize\bfseries},
                     arr/.style={-{Stealth[scale=0.85]}, thick, draw=DarkRed}
                 ]
                     \node[layer] (fe) {Klient Webowy (Svelte 5 + CodeMirror 6)};
 
-                    \node[slice, below=0.38cm of fe, xshift=-2.48cm] (s1) {\textbf{auth}\\\tiny OAuth2\\\tiny JWT};
+                    \node[slice, below=0.30cm of fe, xshift=-2.44cm] (s1) {\textbf{auth}\\\tiny OAuth2\\\tiny JWT};
                     \node[slice, right=0.12cm of s1] (s2) {\textbf{problem}\\\tiny Zadania\\\tiny Testy};
                     \node[slice, right=0.12cm of s2] (s3) {\textbf{submission}\\\tiny Wrapper\\\tiny Ewaluacja};
                     \node[slice, right=0.12cm of s3] (s4) {\textbf{judge0}\\\tiny Klient\\\tiny Webhook};
                     \node[slice, right=0.12cm of s4] (s5) {\textbf{user}\\\tiny Profil\\\tiny Streaki};
 
-                    \node[infra, below=0.38cm of s2, xshift=-0.25cm] (db) {PostgreSQL 16};
-                    \node[infra, below=0.38cm of s4, xshift=0.1cm] (j0) {Sandbox Judge0};
+                    \node[infra, below=0.30cm of s2, xshift=-0.25cm] (db) {PostgreSQL 16};
+                    \node[infra, below=0.30cm of s4, xshift=0.1cm] (j0) {Sandbox Judge0};
 
                     \draw[arr, <->] (fe.south) -- (s3.north);
                     \draw[arr, <->] (s2.south) -- (db.north);
@@ -508,7 +512,7 @@ if __name__ == "__main__":
             fill=DarkRed,
             text=white,
             font=\scriptsize\bfseries,
-            minimum width=13.8cm,
+            minimum width=13.6cm,
             minimum height=0.52cm,
             align=center
         },
@@ -522,7 +526,7 @@ if __name__ == "__main__":
         }
     ]
         % Stały obszar rysowania zapobiegający przesunięciom między krokami 1-5
-        \useasboundingbox (-7.0, -5.75) rectangle (7.0, 0.1);
+        \useasboundingbox (-6.9, -5.65) rectangle (6.9, 0.1);
 
         % --- KROK 1: Logowanie OAuth2 ---
         \only<1>{
