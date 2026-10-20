@@ -424,25 +424,15 @@
 \section{Strategia i architektura}
 
 \begin{frame}{Strategia rozwiązania i architektura systemu}
-    \vspace{-4pt}
     \begin{columns}[T,onlytextwidth]
         \begin{column}{0.46\textwidth}
             \begin{block}{Stos technologiczny}
-                \footnotesize
-                \begin{itemize}\setlength{\itemsep}{0pt}
+                \begin{itemize}\setlength{\itemsep}{3pt}
                     \item \textbf{Frontend (SPA):} Svelte 5, TypeScript, TailwindCSS v4, edytor \textbf{CodeMirror 6}.
                     \item \textbf{Backend (REST API):} Python 3.14, \textbf{FastAPI}, SQLAlchemy 2.0, Alembic, \textbf{PostgreSQL}.
                     \item \textbf{Silnik wykonawczy:} skonteneryzowany klaster \textbf{Judge0} (bezpieczny sandbox).
                 \end{itemize}
             \end{block}
-            \vspace{-4pt}
-            \begin{exampleblock}{Podejście inżynierskie}
-                \footnotesize
-                \begin{itemize}\setlength{\itemsep}{0pt}
-                    \item \textbf{Vertical Slice Architecture (VSA):} podział na niezależne wycinki domenowe zamiast warstw technicznych.
-                    \item \textbf{Testcontainers:} automatyczne testy integracyjne na rzeczywistej bazie PostgreSQL.
-                \end{itemize}
-            \end{exampleblock}
         \end{column}
 
         \begin{column}{0.51\textwidth}
@@ -682,15 +672,6 @@ class Solution:
             ) if q >= min_q
         )
             \end{lstlisting}
-
-            \vspace{-2pt}
-            \begin{exampleblock}{Asynchroniczny odbiór z Judge0}
-                \scriptsize
-                \begin{itemize}\setlength{\itemsep}{1pt}
-                    \item Zamiast blokującego \textit{pollingu} zastosowano \textbf{webhooki} (\texttt{PUT /judge0/submit/\{id\}}).
-                    \item Wbudowany komparator Judge0 weryfikuje czysty \texttt{stdout}, a logi z \texttt{print()} wracają w osobnym strumieniu.
-                \end{itemize}
-            \end{exampleblock}
         \end{column}
 
         \begin{column}{0.56\textwidth}
@@ -722,36 +703,15 @@ if __name__ == "__main__":
 \end{frame}
 
 % =============================================================================
-% SLAJD 8: Podsumowanie i kierunki rozwoju
+% SLAJD KOŃCOWY: Podziękowanie
 % =============================================================================
-\begin{frame}{Podsumowanie i kierunki dalszego rozwoju}
-    \begin{columns}[T,onlytextwidth]
-        \begin{column}{0.52\textwidth}
-            \begin{exampleblock}{Realizacja celu pracy inżynierskiej}
-                Cel pracy został \textbf{w pełni osiągnięty}:
-                \begin{itemize}
-                    \item Zbudowano działającą, skalowalną platformę \textbf{AlgoBio} łączącą bioinformatykę z nowoczesnym UX.
-                    \item Wdrożono bezpieczną, asynchroniczną ewaluację kodu z automatycznym wrappowaniem w klasy i importy.
-                    \item Zapewniono wysoką modularność dzięki \textbf{Vertical Slice Architecture}.
-                \end{itemize}
-            \end{exampleblock}
-        \end{column}
-
-        \begin{column}{0.45\textwidth}
-            \begin{block}{Kierunki dalszego rozwoju}
-                \begin{itemize}
-                    \item Integracja z naukowym systemem tożsamości \textbf{ORCID} oraz \textbf{GitHub OAuth2}.
-                    \item Rozszerzenie wrappera o kolejne języki używane w bioinformatyce (\textbf{R}, \textbf{Julia}, \textbf{C++}).
-                    \item Rozbudowa panelu administracyjnego o kreator zadań i generator testów.
-                \end{itemize}
-            \end{block}
-        \end{column}
-    \end{columns}
-
-    \vspace{6pt}
+\begin{frame}
     \centering
-    {\Large \textcolor{MainRed}{\textbf{Dziękuję za uwagę!}}}\\[2pt]
-    {\small Zapraszam do zadawania pytań.}
+    \vspace{1.2cm}
+    \begin{beamercolorbox}[sep=14pt,center,shadow=true,rounded=true]{title}
+        {\LARGE \textbf{Dziękuję serdecznie za uwagę}}\\[8pt]
+        {\normalsize Zapraszam na \texttt{algobio.io}}
+    \end{beamercolorbox}
 \end{frame}
 
 \end{document}
