@@ -521,12 +521,12 @@ if __name__ == "__main__":
             inner sep=2pt
         }
     ]
-        % Stały obszar rysowania zapobiegający przesunięciom między krokami 1-4
+        % Stały obszar rysowania zapobiegający przesunięciom między krokami 1-5
         \useasboundingbox (-7.0, -5.75) rectangle (7.0, 0.1);
 
         % --- KROK 1: Logowanie OAuth2 ---
         \only<1>{
-            \node[titlebar] at (0, -0.25) {1/4: Bezpieczne uwierzytelnianie użytkowników (OAuth 2.0 -- Google oraz GitHub)};
+            \node[titlebar] at (0, -0.25) {1/5: Bezpieczne uwierzytelnianie użytkowników (OAuth 2.0 -- Google oraz GitHub)};
             \node[imgbox] at (0, -3.15) {
                 \includegraphics[height=4.85cm, trim=450 220 450 220, clip]{oauth.png}
             };
@@ -534,7 +534,7 @@ if __name__ == "__main__":
 
         % --- KROK 2: Widok rozwiązywania problemu (IDE) ---
         \only<2>{
-            \node[titlebar] at (0, -0.25) {2/4: Dwuokienkowy interfejs problemu, edytor CodeMirror 6 oraz przypadki testowe};
+            \node[titlebar] at (0, -0.25) {2/5: Dwuokienkowy interfejs problemu, edytor CodeMirror 6 oraz przypadki testowe};
             \node[imgbox] (probimg) at (0, -3.15) {
                 \includegraphics[height=4.85cm]{problemPage.png}
             };
@@ -544,17 +544,25 @@ if __name__ == "__main__":
             \end{scope}
         }
 
-        % --- KROK 3: Werdykt zgłoszenia i modal grywalizacji (Streak) ---
+        % --- KROK 3: Tryb Run -- wykrycie błędu na jawnym przypadku testowym ---
         \only<3>{
-            \node[titlebar] at (0, -0.25) {3/4: Historia zgłoszeń, diagnostyka przypadków testowych i modal serii (\textit{Streak})};
+            \node[titlebar] at (0, -0.25) {3/5: Tryb Run -- diagnostyka błędnego przypadku testowego (\textit{Expected} vs \textit{Actual})};
             \node[imgbox] at (0, -3.15) {
-                \includegraphics[height=4.85cm]{success.png}
+                \includegraphics[height=4.85cm]{invalidRun.png}
             };
         }
 
-        % --- KROK 4: Profil użytkownika i roczna mapa aktywności (Heatmap) ---
+        % --- KROK 4: Werdykt zgłoszenia (Submit) i modal grywalizacji (Streak) ---
         \only<4>{
-            \node[titlebar] at (0, -0.25) {4/4: Profil użytkownika -- statystyki serii (\textit{Streaks}) oraz roczna mapa aktywności};
+            \node[titlebar] at (0, -0.25) {4/5: Tryb Submit -- zaliczenie pełnego zbioru testów i modal serii (\textit{Streak})};
+            \node[imgbox] at (0, -3.15) {
+                \includegraphics[height=4.85cm]{success2.png}
+            };
+        }
+
+        % --- KROK 5: Profil użytkownika i roczna mapa aktywności (Heatmap) ---
+        \only<5>{
+            \node[titlebar] at (0, -0.25) {5/5: Profil użytkownika -- statystyki serii (\textit{Streaks}) oraz roczna mapa aktywności};
             \node[imgbox] (heatimg) at (0, -3.15) {
                 \includegraphics[height=4.85cm, trim=380 0 380 0, clip]{heatmap.png}
             };
