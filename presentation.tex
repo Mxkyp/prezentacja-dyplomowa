@@ -467,6 +467,119 @@
 \end{frame}
 
 % =============================================================================
+% SLAJD: Architektura wdrożeniowa Kubernetes i separacja sieciowa
+% =============================================================================
+\begin{frame}{Architektura wdrożeniowa Kubernetes i separacja sieciowa}
+    \centering
+    \vspace{1pt}
+    \begin{tikzpicture}[
+        x=1cm, y=1cm,
+        zone/.style={
+            rectangle,
+            rounded corners=4pt,
+            draw=DarkRed!60,
+            fill=CodeBg,
+            thick,
+            dashed
+        },
+        zonetitle/.style={
+            rectangle,
+            rounded corners=2pt,
+            fill=DarkRed,
+            text=white,
+            font=\tiny\bfseries,
+            inner xsep=5pt,
+            inner ysep=2pt
+        },
+        deploy/.style={
+            rectangle,
+            rounded corners=3pt,
+            draw=DarkRed,
+            fill=white,
+            thick,
+            font=\scriptsize,
+            align=center,
+            minimum height=0.72cm
+        },
+        stateful/.style={
+            rectangle,
+            rounded corners=3pt,
+            draw=MainRed!80!black,
+            fill=LightRed,
+            thick,
+            font=\scriptsize,
+            align=center,
+            minimum height=0.64cm
+        },
+        worker/.style={
+            rectangle,
+            rounded corners=3pt,
+            draw=MainRed,
+            fill=white,
+            very thick,
+            font=\scriptsize,
+            align=center,
+            minimum height=0.78cm
+        },
+        secbadge/.style={
+            rectangle,
+            rounded corners=2pt,
+            draw=MainRed,
+            fill=MainRed,
+            text=white,
+            font=\tiny\bfseries,
+            inner xsep=5pt,
+            inner ysep=2pt
+        },
+        arr/.style={-{Stealth[scale=0.8]}, thick, draw=DarkRed},
+        arrbi/.style={{Stealth[scale=0.8]}-{Stealth[scale=0.8]}, thick, draw=DarkRed}
+    ]
+        \useasboundingbox (0, -5.60) rectangle (13.80, 0.12);
+
+        % =====================================================================
+        % STREFA 1: PUNKT WEJŚCIA DO KLASTRA (INGRESS / EDGE)
+        % =====================================================================
+        \draw[zone] (0.05, -1.28) rectangle (13.75, -0.05);
+        \node[zonetitle, anchor=east] at (13.55, -0.05) {Strefa Publiczna (Ingress / Edge)};
+
+        \node[deploy, minimum width=6.2cm] (ing) at (3.75, -0.68) {\textbf{Ingress Controller / Nginx}\\{\tiny Punkt wejścia HTTPS, serwowanie statycznej paczki SPA i routing TLS}};
+
+        % =====================================================================
+        % STREFA 2: APLIKACYJNA (ALGOBIO NAMESPACE)
+        % =====================================================================
+        \draw[zone] (0.05, -3.02) rectangle (13.75, -1.58);
+        \node[zonetitle, anchor=east] at (13.55, -1.58) {Strefa Aplikacyjna (\texttt{algobio-app} Namespace)};
+
+        \node[deploy, minimum width=4.4cm] (api) at (2.85, -2.32) {\textbf{Deployment: Backend API (FastAPI)}\\{\tiny Skalowalne repliki podów ($1..K$) -- moduły VSA}};
+        \node[stateful, minimum width=4.6cm, minimum height=0.72cm] (appdb) at (10.55, -2.32) {\textbf{StatefulSet: PostgreSQL 16}\\{\tiny Główna baza danych AlgoBio}};
+
+        % Połączenie Ingress <-> Backend API (prosto w dół)
+        \draw[arrbi] (2.85, -1.04) -- node[fill=white, inner sep=1.5pt, font=\tiny] {\texttt{/api/*} (REST)} (api.north);
+        \draw[arrbi] (api.east) -- node[above, font=\tiny] {SQL (TCP 5432)} (appdb.west);
+
+        % =====================================================================
+        % STREFA 3: IZOLOWANA STREFA SANDBOXA (JUDGE0 NAMESPACE)
+        % =====================================================================
+        \draw[zone, draw=MainRed, fill=LightRed!60, very thick] (0.05, -5.42) rectangle (13.75, -3.32);
+        \node[zonetitle, fill=MainRed, anchor=east] at (13.55, -3.32) {Strefa Izolowana Sandboxa (\texttt{judge0} Namespace + \texttt{NetworkPolicy})};
+
+        \node[deploy, minimum width=3.1cm] (j0api) at (2.05, -4.38) {\textbf{Deployment:}\\{\textbf{Judge0 Server (API)}}};
+        \node[stateful, minimum width=2.7cm] (redis) at (5.60, -3.98) {\textbf{Redis}\\{\tiny Kolejka zadań}};
+        \node[stateful, minimum width=2.7cm] (j0db) at (5.60, -4.78) {\textbf{PostgreSQL}\\{\tiny Baza Judge0}};
+        \node[worker, minimum width=5.4cm] (workers) at (10.65, -4.38) {\textbf{Deployment: Judge0 Workers ($1..M$ replik)}};
+
+        % Połączenia wewnątrz strefy Judge0
+        \draw[arrbi] (j0api.east) -- (redis.west);
+        \draw[arrbi] (j0api.east) -- (j0db.west);
+        \draw[arrbi] (redis.east) -- (workers.west);
+        \draw[arrbi] (j0db.east) -- (workers.west);
+
+        % Jedyne dozwolone przejście przez granicę strefy (prosto w dół z czystą etykietą)
+        \draw[arrbi, MainRed, very thick] (2.05, -2.68) -- node[fill=white, inner sep=1.5pt, font=\tiny\bfseries, text=MainRed] {Tylko HTTP (Submit / Webhook)} (j0api.north);
+    \end{tikzpicture}
+\end{frame}
+
+% =============================================================================
 % SEKCJA 4: Wnioski i wyzwania
 % =============================================================================
 \section{Wnioski i wyzwania}
