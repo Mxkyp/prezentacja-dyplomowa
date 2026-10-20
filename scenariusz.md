@@ -19,11 +19,42 @@ Trzeba założyć że komisja nic o pracy nie wie, żeby
 Sama prezentacja też 7,8 minut więc 7,8 slajdów
 Warto zadbać o estetykę prezentacji. I sprawdzić czy nie ma błędów na prezentacji (ortograficznych, literówek itp.)
 
-# Wstęp
-Szanowno komisja, tematem mojej pracy inżynierskiej jest interaktywna platfroma do nauki algorytmów bioinformatyki której nadałem imię Algobio.
+Aby nie odwracać się do ekranu, zapamiętaj prezentację jako **4 logiczne bloki połączone łańcuchem przyczynowo-skutkowym**:
+**PROBLEM RYNKOWY (2 slajdy) -> PRODUKT (1 slajd, 5 kliknięć) -> ARCHITEKTURA (2 slajdy) -> GŁÓWNY PROBLEM INŻYNIERSKI (3 slajdy)**.
 
-Interaktywna platfroma tzn. umożliwiająca użytkownikom naukę bezpośrednio w przeglądarce.
-## Motywacja wyboru i luka rynkowa
+```text
+[1. Tytuł]
+   │
+   ▼
+=== BLOK I: DLACZEGO TO ZROBIŁEM? (Motywacja) ===
+[2. Paradygmat LeetCode (3 kliknięcia: Szablon -> Run -> Submit)]
+   │  Kotwica: "Jak dziś uczy się algorytmów? Przeglądarka, czysty kod w klasie, Run i Submit."
+   ▼
+[3. Siatka 8 branż (Quant, ML, DevOps... -> Bioinformatyka ???)]
+   │  Kotwica: "Każda branża ma swojego LeetCode'a, a bioinformatyka utknęła na Rosalind i plikach .txt."
+   ▼
+=== BLOK II: CO ZBUDOWAŁEM? (Demo produktu – 5 kliknięć) ===
+[4. Karuzela 5 ekranów: OAuth -> Edytor -> Błędny Run -> Udany Submit -> Profil/Heatmapa]
+   │  Kotwica (ścieżka użytkownika): "Loguję się (1) -> Piszę kod (2) -> Mylę się w Run (3) -> Zaliczam w Submit (4) -> Buduję Streak w profilu (5)."
+   ▼
+=== BLOK III: Z CZEGO I JAK TO STOI? (Architektura: od kodu do klastra) ===
+[5. Stos technologiczny + Vertical Slice Architecture]
+   │  Kotwica: "Svelte 5 na froncie, FastAPI w 5 autonomicznych modułach domenowych i Judge0 z boku."
+   ▼
+[6. Architektura K8s i 3 strefy sieciowe (Ingress -> App -> Izolowany Judge0)]
+   │  Kotwica: "Obcy kod jest groźny -> dzielimy klaster K8s na 3 strefy (Ingress SPA, Backend+DB, odcięty NetworkPolicy Sandbox z Redisem i Workerami)."
+   ▼
+=== BLOK IV: NAJTRUDNIEJSZY PROBLEM INŻYNIERSKI (Od zderzenia do kodu) ===
+[7. Zderzenie (?!): Obiektowe IDE vs surowy stdin/stdout Judge0]
+   │  Kotwica: "Użytkownik chce klasy Solution, return i print() do debugu, a czysty Judge0 zna tylko stdin i jeden strumień stdout."
+   ▼
+[8. Przepływ żądań (Sequence Diagram: UI -> FastAPI -> Judge0 + Scenariusz A/B)]
+   │  Kotwica: "Jak to spinamy w czasie? Paczka N testów idzie do Judge0, wraca webhookami: N/N daje Streak (A), błąd na k-tym teście daje diagnostykę (B)."
+   ▼
+[9. Kod wrappera (Porównanie: Kod użytkownika vs Skrypt po opakowaniu)]
+   │  Kotwica: "Jak to działa pod maską w Pythonie? Wstrzykujemy typy, redirect_stdout(sys.stderr) oddziela printy użytkownika od JSON-a z return."
+   ▼
+[10. Podziękowanie (algobio.io)]
 
 
 ## Uwagi gemini
