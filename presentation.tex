@@ -143,14 +143,12 @@
         \node[badge] at (0.52, -0.98) {1};
         \node[anchor=west, font=\scriptsize\bfseries, text=DarkRed] at (0.78, -0.98) {Opis problemu};
 
-        \node[anchor=north west, align=left, font=\scriptsize, text width=5.0cm] at (0.38, -1.32) {
-            \textbf{Zadanie:} Oblicz procentową zawartość zasad \texttt{G} oraz \texttt{C} w nici DNA.\\[6pt]
+        \node[anchor=north west, align=left, font=\scriptsize, text width=5.05cm] at (0.38, -1.28) {
+            \textbf{Zadanie:} Odczyt z sekwenatora (\texttt{FastqRead}) zawiera sekwencję zasad (\texttt{seq}) oraz listę ocen jakości Phred (\texttt{phred}). Zwróć sekwencję zawierającą wyłącznie nukleotydy o jakości $\ge \texttt{min\_q}$.\\[5pt]
             \textbf{Przykład 1:}\\
-            \texttt{Wejście: s = "AGCTATAG"}\\
-            \texttt{Wyjście: 37.5}\\[4pt]
-            \textbf{Przykład 2:}\\
-            \texttt{Wejście: s = "GGCC"}\\
-            \texttt{Wyjście: 100.0}
+            \texttt{Wejście: read = FastqRead(\textquotedbl AGCT\textquotedbl,}\\
+            \hspace*{1.2em}\texttt{[35, 12, 40, 38]), min\_q = 30}\\
+            \texttt{Wyjście: \textquotedbl ACT\textquotedbl} \textcolor{gray}{(odrzucenie \texttt{'G'})}
         };
 
         % =====================================================================
@@ -160,13 +158,14 @@
         \node[badge] at (6.17, -0.98) {2};
         \node[anchor=west, font=\scriptsize\bfseries, text=DarkRed] at (6.43, -0.98) {Edytor kodu w przeglądarce};
 
-        % KROK 1: Sam szablon funkcji (bez implementacji użytkownika)
+        % KROK 1: Sam szablon funkcji z komentarzem typu (bez implementacji użytkownika)
         \only<1>{
-            \node[anchor=north west, align=left, font=\scriptsize\ttfamily, text width=7.4cm] at (6.10, -1.38) {
+            \node[anchor=north west, align=left, font=\scriptsize\ttfamily, text width=7.55cm] at (6.05, -1.28) {
                 \textcolor{MainRed}{\textbf{class}} \textbf{Solution}:\\
-                \hspace*{1.2em}\textcolor{MainRed}{\textbf{def}} \textbf{solve}(self, s: \textbf{str}) -> \textbf{float}:\\
-                \hspace*{2.4em}\textcolor{gray}{\# Miejsce na implementację użytkownika...}\\
-                \hspace*{2.4em}\textcolor{MainRed}{\textbf{pass}}
+                \hspace*{1.0em}\textcolor{gray}{\# class FastqRead:}\\
+                \hspace*{1.0em}\textcolor{gray}{\# \ \ \ \ seq: str; phred: list[int]}\\
+                \hspace*{1.0em}\textcolor{MainRed}{\textbf{def}} \textbf{filter\_bases}(self, read: \textbf{FastqRead}, min\_q: \textbf{int}) -> \textbf{str}:\\
+                \hspace*{2.0em}\textcolor{MainRed}{\textbf{pass}}
             };
             \node[btn] at (10.25, -3.32) {Run};
             \node[btn] at (12.05, -3.32) {Submit};
@@ -174,11 +173,14 @@
 
         % KROK 2 i 3: Implementacja użytkownika
         \only<2-3>{
-            \node[anchor=north west, align=left, font=\scriptsize\ttfamily, text width=7.4cm] at (6.10, -1.38) {
+            \node[anchor=north west, align=left, font=\scriptsize\ttfamily, text width=7.55cm] at (6.05, -1.28) {
                 \textcolor{MainRed}{\textbf{class}} \textbf{Solution}:\\
-                \hspace*{1.2em}\textcolor{MainRed}{\textbf{def}} \textbf{solve}(self, s: \textbf{str}) -> \textbf{float}:\\
-                \hspace*{2.4em}gc = s.count(\textcolor{AccentGreen}{'G'}) + s.count(\textcolor{AccentGreen}{'C'})\\
-                \hspace*{2.4em}\textcolor{MainRed}{\textbf{return}} \textbf{round}(gc / \textbf{len}(s) * 100, 2)
+                \hspace*{1.0em}\textcolor{gray}{\# class FastqRead:}\\
+                \hspace*{1.0em}\textcolor{gray}{\# \ \ \ \ seq: str; phred: list[int]}\\
+                \hspace*{1.0em}\textcolor{MainRed}{\textbf{def}} \textbf{filter\_bases}(self, read: \textbf{FastqRead}, min\_q: \textbf{int}) -> \textbf{str}:\\
+                \hspace*{2.0em}\textcolor{MainRed}{\textbf{return}} \textcolor{AccentGreen}{\textquotedbl\textquotedbl}.join(\\
+                \hspace*{3.0em}b \textcolor{MainRed}{\textbf{for}} b, q \textcolor{MainRed}{\textbf{in}} \textbf{zip}(read.seq, read.phred) \textcolor{MainRed}{\textbf{if}} q >= min\_q\\
+                \hspace*{2.0em})
             };
         }
 
@@ -203,9 +205,9 @@
             \node[badge, fill=AccentGreen] at (0.52, -4.22) {3};
             \node[anchor=west, font=\scriptsize\bfseries, text=AccentGreen] at (0.78, -4.22) {Wynik uruchomienia próbnego (Run) -- 3 jawne przypadki testowe};
 
-            \node[testok] at (2.55, -4.85) {\checkmark\ \texttt{"AGCTATAG"} $\rightarrow$ \texttt{37.5}};
-            \node[testok] at (7.00, -4.85) {\checkmark\ \texttt{"GGCC"} $\rightarrow$ \texttt{100.0}};
-            \node[testok] at (11.45, -4.85) {\checkmark\ \texttt{"ATAT"} $\rightarrow$ \texttt{0.0}};
+            \node[testok, font=\tiny\bfseries] at (2.55, -4.85) {\checkmark\ \texttt{(\textquotedbl AGCT\textquotedbl,[35,12,40,38]), 30} $\rightarrow$ \texttt{\textquotedbl ACT\textquotedbl}};
+            \node[testok, font=\tiny\bfseries] at (7.00, -4.85) {\checkmark\ \texttt{(\textquotedbl GGCC\textquotedbl,[40,40,40,40]), 20} $\rightarrow$ \texttt{\textquotedbl GGCC\textquotedbl}};
+            \node[testok, font=\tiny\bfseries] at (11.45, -4.85) {\checkmark\ \texttt{(\textquotedbl ATAT\textquotedbl,[10,15,12,18]), 25} $\rightarrow$ \texttt{\textquotedbl\textquotedbl}};
         }
 
         % KROK 3: Pełna ewaluacja Submit + Grywalizacja (spójna kolorystyka)
@@ -440,23 +442,25 @@
             \textbf{\scriptsize 1. Kod pisany przez użytkownika:}
             \begin{lstlisting}
 class Solution:
-    def gc_content(self, dna: str) -> float:
-        gc = dna.count('G') + dna.count('C')
-        return round(gc / len(dna) * 100, 2)
+    # class FastqRead: seq: str; phred: list[int]
+    def filter_bases(self, read: FastqRead, min_q: int) -> str:
+        return "".join(
+            b for b, q in zip(read.seq, read.phred) if q >= min_q
+        )
             \end{lstlisting}
 
             \textbf{\scriptsize 2. Paczka po opakowaniu przez backend:}
             \begin{lstlisting}
 import sys, json
-from typing import List, Dict, Optional
-from algobio_types import DNASequence
+from algobio_types import FastqRead
 
 # --- Wstrzykniety kod uzytkownika ---
 class Solution: ...
 # --- Automatyczny runner I/O ---
 if __name__ == "__main__":
-    args = json.loads(sys.stdin.read())
-    res = Solution().gc_content(*args)
+    raw = json.loads(sys.stdin.read())
+    read = FastqRead(**raw["read"])
+    res = Solution().filter_bases(read, raw["min_q"])
     print(json.dumps(res))
             \end{lstlisting}
         \end{column}
