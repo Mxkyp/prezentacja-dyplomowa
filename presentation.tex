@@ -453,7 +453,7 @@
                     \node[slice, right=0.12cm of s3] (s4) {\textbf{judge0}\\\tiny Klient\\\tiny Webhook};
                     \node[slice, right=0.12cm of s4] (s5) {\textbf{user}\\\tiny Profil\\\tiny Streaki};
 
-                    \node[infra, below=0.30cm of s2, xshift=-0.25cm] (db) {PostgreSQL 16};
+                    \node[infra, below=0.30cm of s2, xshift=-0.25cm] (db) {PostgreSQL 18};
                     \node[infra, below=0.30cm of s4, xshift=0.1cm] (j0) {Sandbox Judge0};
 
                     \draw[arr, <->] (fe.south) -- (s3.north);
@@ -551,7 +551,7 @@
         \node[zonetitle, anchor=east] at (13.55, -1.58) {Strefa Aplikacyjna (\texttt{algobio-app} Namespace)};
 
         \node[deploy, minimum width=4.4cm] (api) at (2.85, -2.32) {\textbf{Deployment: Backend API (FastAPI)}\\{\tiny Skalowalne repliki podów ($1..K$) -- moduły VSA}};
-        \node[stateful, minimum width=4.6cm, minimum height=0.72cm] (appdb) at (10.55, -2.32) {\textbf{StatefulSet: PostgreSQL 16}\\{\tiny Główna baza danych AlgoBio}};
+        \node[stateful, minimum width=4.6cm, minimum height=0.72cm] (appdb) at (10.55, -2.32) {\textbf{StatefulSet: PostgreSQL 18}\\{\tiny Główna baza danych AlgoBio}};
 
         % Połączenie Ingress <-> Backend API (prosto w dół)
         \draw[arrbi] (2.85, -1.04) -- node[fill=white, inner sep=1.5pt, font=\tiny] {\texttt{/api/*} (REST)} (api.north);
